@@ -3,5 +3,5 @@ node_modules
 npm-debug.log
 .git
 modules/db
-deploy
-deploy.pub
+capitalbox
+capitalbox.pub
