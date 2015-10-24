@@ -1,0 +1,73 @@
+{>layout/}
+{<content}
+{>header/}
+    <div class="row container-fluid">
+        <!--Body-->
+        <div class="col-md-offset-3 col-md-6">
+            <!--Search-->
+            <form class="form-inline" id="formsearch">
+                <div class="form-group-sm form-group">
+                    <input type="text" value="{filter.from}" class="form-control from" name="from" placeholder="From"/>&nbsp
+                    <input type="text" value="{filter.to}" class="form-control to" name="to" placeholder="To"/>&nbsp
+                </div>
+                <button class="btn btn-default btn-sm"><span class="glyphicon glyphicon glyphicon-search"></span> Find</button>
+            </form>
+            <hr>
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="btn-default btn btn-sm disabled">Total: {total} <span class="glyphicon glyphicon-ruble"></span></div>
+                </div>
+                <div class="col-xs-8">
+                    <div class="btn btn-default btn-sm pull-right" id="addFinance"><span class="glyphicon glyphicon-rub"></span>Add</div>
+                </div>
+            </div>
+            <!--Finance-->
+            <div class="row container-fluid">
+                <table class="table table-striped" id="capitalbox">
+                    <thead class="text-muted">
+                        <tr>
+                            <th width="30%">Date</th>
+                            <th width="20%">Type</th>
+                            <th width="30%">Desc</th>
+                            <th width="20%">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#finance}
+                            {> finance_table_item/}
+                        {/finance}
+                    </tbody>
+                </table>
+            </div>
+            {>breadcrumb/}
+        </div>
+        <script>
+            require(['jquery', 'safe', 'jquery-block', 'datepicker', 'dust'], function($, safe) {
+                $(function() {
+                    var $main = $('#content');
+                    var $search = $main.find('#formsearch');
+
+                    $search.find('input').each(function() {
+                        $(this).datepicker({format: 'dd-mm-yyyy'});
+                    });
+
+                    $main.on('click', '#addFinance', function() {
+                       var $self = $(this);
+                        $main.block();
+                        safe.run(function(cb) {
+                            require(['dst!views/add_finance_modal.dust'], function(tpl) {
+                                tpl({uniq: Uniq()}, safe.sure_result(cb, function(text) {
+                                    var $text = $(text);
+                                    $text.modal();
+                                }));
+                            });
+                        }, function(err) {
+                            appError(err);
+                            $main.unblock();
+                        })
+                    });
+                });
+            }, appError);
+        </script>
+    </div>
+{/content}

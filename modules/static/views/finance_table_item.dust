@@ -1,0 +1,13 @@
+<tr>
+    <th>{_dt}</th>
+    <th>
+        {@eq key=_s_type value="d" }Debet <span class="text-success glyphicon glyphicon-plus"></span>{/eq}
+        {@eq key=_s_type value="c" }Credit <span class="text-danger glyphicon glyphicon-minus">{/eq}
+    </th>
+    <th>
+       {_s_desc}
+    </th>
+    <th>
+        {_i_val} <span class="glyphicon glyphicon-ruble"></span>
+    </th>
+</tr>
