@@ -9,21 +9,6 @@ var bodyParser = require('body-parser');
 var ctx = require('ctx');
 var api = require('api');
 
-safe.run(function(cb) {
-    ctx.collection('users', safe.sure(cb, function(users) {
-        api.core.getUser('fakeUser', {_s_token: 'SuperAdmin'}, safe.sure(cb, function(user) {
-            if (!user)
-               return users.insert({_s_login: '8clever', _s_password: 'aaa5134202AAA', _i_deposit: 225000, _s_token: 'SuperAdmin'}, cb);
-
-            cb();
-        }));
-    }));
-}, function(err) {
-    if (err)
-        console.error(err);
-});
-
-
 app.engine('dust', dust.engine({
     useHelpers: true
 }));
