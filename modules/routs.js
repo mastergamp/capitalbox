@@ -16,6 +16,11 @@ module.exports = function(app) {
         res.render('login', {title: 'Login'});
     });
 
+    app.get('/logout', function(req, res) {
+        delete req.session.apiToken;
+        res.redirect('/login');
+    });
+
     app.post('/jsonrpc', function(req, res, cb) {
        if (!req.xhr)
             return safe.back(cb, new Error(400, 'Invalid request data'));

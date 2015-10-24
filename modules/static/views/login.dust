@@ -1,49 +1,65 @@
 {>layout/}
 {<content}
-    <div class="row container-fluid" style="margin-top: 40px">
-        <div class="col-md-offset-4 col-md-3" >
-            <h4>Please sign in</h4>
-            <hr>
-            <form id="loginform">
-                <input class="form-control" type="text" name="_s_login" placeholder="login" style="margin-bottom: 5px;">
-                <input class="form-control" type="password" name="_s_password" placeholder="password"  style="margin-bottom: 5px;">
-                <div type="submit" class="btn btn-block btn-primary">Sign In</div>
-            </form>
-            {>breadcrumb/}
-        </div>
-        <script>
-            require(['jquery', 'lodash', 'safe','jquery-block'], function($, _, safe) {
-                $(function() {
-                    var $main = $('#content');
-                    var $form = $main.find('#loginform');
+    <div class="col-md-offset-4 col-md-4" style="margin-top: 40px">
+        <h4 class="text-muted"><b>Please sign in</b></h4>
+        <hr>
+        <form id="loginform">
+            <input class="form-control" type="text" name="_s_login" placeholder="login" style="margin-bottom: 5px;">
+            <input class="form-control" type="password" name="_s_password" placeholder="password"  style="margin-bottom: 5px;">
+            <div id="signin" class="btn btn-block btn-primary">Sign In</div>
+            <div class="btn btn-block btn-success" id="reg">Registration</div>
+        </form>
 
-                    $form.on('click', 'div[type=submit]', function() {
-                        var $self = $(this);
-                        var data = _.reduce($form.serializeArray(), function(memo, i) {
-                            memo[i.name] = i.value;
-                            return memo;
-                        }, {});
+        {>breadcrumb/}
+    </div>
+    <script>
+        require(['jquery', 'lodash', 'safe','jquery-block'], function($, _, safe) {
+            $(function() {
+                var $main = $('#content');
+                var $form = $main.find('#loginform');
 
-                        $form.block();
-                        return safe.run(function(cb) {
-                            require(['api'], function(api){
-                                api.call('core.getUser', data, safe.sure(cb, function(user) {
-                                    if (!user)
-                                       return cb({status: 400, statusText: 'Login or Password incorrect.'});
-
-                                    _apiToken = user._s_token;
-                                    api.call('core.checkAccess', safe.sure_result(cb, function() {
-                                        window.location = '/'+user._s_token+'/main';
-                                    }));
-                                }));
-                            }, cb);
-                        }, function(err) {
-                           appError(err, '#loginform');
-                            $form.unblock();
+                $form.on('click', '#reg', function() {
+                    var $self = $(this);
+                    $main.block();
+                    safe.run(function(cb) {
+                        require(['dst!views/registration.dust'], function(tpl) {
+                            tpl({uniq: Uniq()}, safe.sure_result(cb, function(text) {
+                                var $text = $(text);
+                                $text.modal();
+                            }));
                         });
+                    }, function(err) {
+                        $main.unblock();
+                        appError(err)
+                    })
+                });
+
+                $form.on('click', '#signin', function() {
+                    var $self = $(this);
+                    var data = _.reduce($form.serializeArray(), function(memo, i) {
+                        memo[i.name] = i.value;
+                        return memo;
+                    }, {});
+
+                    $form.block();
+                    return safe.run(function(cb) {
+                        require(['api'], function(api){
+                            api.call('core.getUser', data, safe.sure(cb, function(user) {
+                                if (!user)
+                                   return cb({status: 400, statusText: 'Login or Password incorrect.'});
+
+                                _apiToken = user._s_token;
+                                api.call('core.checkAccess', safe.sure_result(cb, function() {
+                                    window.location = '/'+user._s_token+'/main';
+                                }));
+                            }));
+                        }, cb);
+                    }, function(err) {
+                       appError(err, '#loginform');
+                        $form.unblock();
                     });
                 });
             });
-        </script>
-    </div>
+        });
+    </script>
 {/content}

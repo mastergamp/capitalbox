@@ -1,88 +1,104 @@
-var appError; var _apiToken; var Uniq;
+var appError; var _apiToken; var Uniq; var appInfo;
 
-var path = window.location.pathname.split('/');
-if (path.length > 2)
-    _apiToken = path[1];
-else
-    _apiToken = 'fakeUser';
+(function() {
+    var path = window.location.pathname.split('/');
+    if (path.length > 2)
+        _apiToken = path[1];
+    else
+        _apiToken = 'fakeUser';
 
-function loadCss(url) {
-    var link = document.createElement("link");
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    link.href = url;
-    document.getElementsByTagName("head")[0].appendChild(link);
-}
+    function loadCss(url) {
+        var link = document.createElement("link");
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.href = url;
+        document.getElementsByTagName("head")[0].appendChild(link);
+    }
 
-require.config({
-    baseUrl: '..',
-    paths: {
-        jquery: 'js/lib/jquery',
-        'jquery-block': 'js/lib/jquery-block',
-        bootstrap: 'js/lib/bootstrap',
-        api: 'js/lib/api',
-        safe: 'js/lib/safe',
-        lodash: 'js/lib/lodash',
-        moment: 'js/lib/moment',
-        datepicker: 'js/lib/bootstrap-datepicker',
-        jsonrpc: 'js/lib/jquery.jsonrpcclient',
-        dust: 'js/lib/dust-full',
-        dst: 'js/lib/dst',
-        text: 'js/lib/text',
-        'dust-helpers': 'js/lib/dust-helpers'
-    },
-    shim: {
-        bootstrap: {
-            deps: ['jquery']
+    require.config({
+        baseUrl: '..',
+        paths: {
+            jquery: 'js/lib/jquery',
+            'jquery-block': 'js/lib/jquery-block',
+            bootstrap: 'js/lib/bootstrap',
+            api: 'js/lib/api',
+            safe: 'js/lib/safe',
+            lodash: 'js/lib/lodash',
+            moment: 'js/lib/moment',
+            datepicker: 'js/lib/bootstrap-datepicker',
+            jsonrpc: 'js/lib/jquery.jsonrpcclient',
+            dust: 'js/lib/dust-full',
+            dst: 'js/lib/dst',
+            text: 'js/lib/text',
+            'dust-helpers': 'js/lib/dust-helpers'
         },
-        datepicker: {
-            deps: ['bootstrap'],
-            init: function() {
-                loadCss('../css/bootstrap-datepicker.css')
+        shim: {
+            bootstrap: {
+                deps: ['jquery']
+            },
+            datepicker: {
+                deps: ['bootstrap'],
+                init: function() {
+                    loadCss('../css/bootstrap-datepicker.css')
+                }
+            },
+            'jquery-block': {
+                deps: ['jquery']
+            },
+            jsonrpc: {
+                deps: ['jquery']
+            },
+            dust: {
+                init: function() {
+                    require(['dust-helpers']);
+                }
+            },
+            dst: {
+                deps: ['dust']
             }
-        },
-        'jquery-block': {
-            deps: ['jquery']
-        },
-        jsonrpc: {
-            deps: ['jquery']
-        },
-        dust: {
-            init: function() {
-                require(['dust-helpers']);
-            }
-        },
-        dst: {
-            deps: ['dust']
         }
-    }
-});
+    });
 
-Uniq = function() {
-    return Math.random().toString().split('.').join('X');
-};
+    Uniq = function() {
+        return Math.random().toString().split('.').join('X');
+    };
 
-require(['jquery'], function($) {
-    appError = function(err, ctx) {
-        if (!err)
-            return ;
+    require(['jquery'], function($) {
+        appError = function(err, ctx) {
+            if (!err)
+                return ;
 
-        var uniq = Math.random().toString().split('.').join('X');
-        var alert;
+            var uniq = Uniq();
+            var alert;
 
-        if (err.status)
-            alert = '<div class="alert alert-danger" id="'+uniq+'"><b>Error '+err.status +' :</b> '+ err.statusText+'</div>';
-        else
-            alert = '<div class="alert alert-danger" id="'+uniq+'">'+err+'</div>';
+            if (err.status)
+                alert = '<div class="alert alert-danger" id="'+uniq+'"><b>'+err.status +' :</b> '+ err.statusText+'</div>';
+            else
+                alert = '<div class="alert alert-danger" id="'+uniq+'">'+err+'</div>';
 
-        setTimeout(function() {
-            $('#'+uniq).remove();
-        }, 2000);
+            setTimeout(function() {
+                $('#'+uniq).remove();
+            }, 20000);
 
-        if (ctx)
-            return  $(ctx + ' *').first().before(alert);
+            if (ctx)
+                return  $(ctx + ' *').first().before(alert);
 
-        $('#content *').first().before(alert);
-    }
-});
+            $('#content *').first().before(alert);
+        };
+
+        appInfo = function(m, ctx) {
+            var uniq = Uniq();
+            var alert = '<div class="alert alert-info" id="'+uniq+'">'+m+'</div>';
+
+            setTimeout(function() {
+                $('#'+uniq).remove();
+            }, 20000);
+
+            if (ctx)
+                return  $(ctx + ' *').first().before(alert);
+
+            $('#content *').first().before(alert);
+        }
+    });
+})();
 

@@ -1,9 +1,10 @@
-<div class="row">
+<div class="row" style="margin-bottom: 20px;">
     <nav class="navbar navbar-default navbar-static-top navbar-inverse">
         <div class="container-fluid">
-            <div class="col-md-offset-3 col-md-6">
+            <div class="col-md-offset-2 col-md-8">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">CapitalBox [<span class="text-info">alpha</span>]</a>
+                    <a href="/logout" class="navbar-brand pull-right">Log out</a>
                 </div>
             </div>
         </div>
