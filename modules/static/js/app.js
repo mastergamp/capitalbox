@@ -63,7 +63,7 @@ var appError; var _apiToken; var Uniq; var appInfo;
         return Math.random().toString().split('.').join('X');
     };
 
-(function($) {
+require(['jquery'], function($) {
     appError = function(err, ctx) {
         if (!err)
             return ;
@@ -99,5 +99,8 @@ var appError; var _apiToken; var Uniq; var appInfo;
 
         $('#content *').first().before(alert);
     }
-})(require(['jquery']));
+}, function(err) {
+    if (err)
+        console.error(err);
+});
 
