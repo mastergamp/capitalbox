@@ -7,7 +7,8 @@ var _ = require("lodash");
 var safe = require("safe");
 var ctx = require('ctx');
 var Error = require('./errorapi.js');
-var mongo = require('mongodb');
+var moment = require('moment');
+var TingoID = ctx.TingoID;
 
 var CoreApi = function() {};
 
@@ -28,9 +29,17 @@ CoreApi.prototype.prefixify = function(data) {
 
       if (prefix.length < 3 || prefix == '_t_')
           delete data[k];
+      else if (prefix == '_dt') {
+        try {
+          data[k] = moment(data[k]).toISOString();
+        }
+        catch(err) {
+          delete data[k];
+        }
+      }
       else if (prefix == '_id') {
         try {
-          data[k] = mongo.ObjectID(data[k]);
+          data[k] = TingoID(data[k]);
         }
         catch(err) {
           delete data[k];
@@ -61,6 +70,7 @@ CoreApi.prototype.prefixify = function(data) {
         }
       }
     });
+
     return data;
   }
   else

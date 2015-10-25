@@ -1,6 +1,6 @@
 {>layout/}
 {<content}
-    <div class="col-md-offset-4 col-md-4" style="margin-top: 40px">
+    <div class="col-md-offset-4 col-md-4" style="margin-top: 40px" id="content">
         <h4 class="text-muted"><b>Please sign in</b></h4>
         <hr>
         <form id="loginform">

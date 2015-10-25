@@ -1,19 +1,20 @@
 <div class="modal fade" id="{uniq}">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-             <h4 class="modal-title">Add Finance</h4>
+             <h4 class="modal-title">{#_id}Edit Finance{/_id}{^_id}Add Finance{/_id}</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="{uniq}-form">
+                    <input type="hidden" name="_id" value="{_id}">
                     <!--type-->
                     <div class="form-group">
                         <label class="col-xs-3 control-label">Type:</label>
                         <div class="col-xs-8">
                             <select name="_s_type" class="form-control">
-                                <option value="d">Debet</option>
-                                <option value="c">Credit</option>
+                                <option value="d" {@eq key=_s_type value="d"}selected{/eq}>Debet</option>
+                                <option value="c" {@eq key=_s_type value="c"}selected{/eq}>Credit</option>
                             </select>
                         </div>
                     </div>
@@ -21,14 +22,14 @@
                     <div class="form-group">
                         <label class="col-xs-3 control-label">Value:</label>
                         <div class="col-xs-8">
-                           <input type="number" name="_i_val" class="form-control">
+                           <input type="number" name="_i_val" value="{_i_val}" class="form-control">
                         </div>
                     </div>
                     <!--Desc-->
                     <div class="form-group">
                         <label class="col-xs-3 control-label">Desc:</label>
                         <div class="col-xs-8">
-                            <textarea name="_s_desc" class="form-control"></textarea>
+                            <textarea name="_s_desc" class="form-control">{_s_desc}</textarea>
                         </div>
                     </div>
                 </form>
@@ -43,6 +44,8 @@
         require(['jquery', 'safe', 'lodash', 'moment', 'jquery-block'], function($, safe, _, moment) {
             $(function() {
                 var $modal = $('#{uniq}'), $form = $modal.find('form');
+                var modalHeader = '#{uniq} .modal-dialog';
+
                 $modal.on('hidden', function() {
                     $modal.remove();
                 });
@@ -59,10 +62,10 @@
 
                     safe.run(function(cb) {
                         require(['api'], function(api) {
-                            api.call('finance.addFinance', data, cb);
+                            api.call('finance.editFinance', data, cb);
                         }, cb);
                      }, function(err) {
-                        appError(err);
+                        appError(err, modalHeader);
                         $modal.unblock();
                         if (!err)
                             window.location.reload();

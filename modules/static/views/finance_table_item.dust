@@ -1,13 +1,25 @@
 <tr>
-    <th>{_dt}</th>
-    <th>
+    <td>{_dt}</td>
+    <td>
         {@eq key=_s_type value="d" }Debet <span class="text-success glyphicon glyphicon-plus"></span>{/eq}
         {@eq key=_s_type value="c" }Credit <span class="text-danger glyphicon glyphicon-minus">{/eq}
-    </th>
-    <th>
+    </td>
+    <td>
        {_s_desc}
-    </th>
-    <th>
+    </td>
+    <td>
         {_i_val} <span class="glyphicon glyphicon-ruble"></span>
-    </th>
+    </td>
+    <td>
+        <div class="dropdown">
+            <div class="btn btn-xs btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Action
+                <span class="caret"></span>
+            </div>
+            <ul class="dropdown-menu" >
+                <li><a href="#" class="edit" data-_id="{_id}"><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
+                <li><a href="#" class="remove" data-_id="{_id}"><span class="glyphicon glyphicon-trash"></span> Delete</a></li>
+            </ul>
+        </div>
+    </td>
 </tr>
