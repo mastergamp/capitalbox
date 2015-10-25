@@ -63,42 +63,40 @@ var appError; var _apiToken; var Uniq; var appInfo;
         return Math.random().toString().split('.').join('X');
     };
 
-    require(['jquery'], function($) {
-        appError = function(err, ctx) {
-            if (!err)
-                return ;
+    appError = function(err, ctx) {
+        if (!err)
+            return ;
 
-            var uniq = Uniq();
-            var alert;
+        var uniq = Uniq();
+        var alert;
 
-            if (err.status)
-                alert = '<div class="alert alert-danger" id="'+uniq+'"><b>'+err.status +' :</b> '+ err.statusText+'</div>';
-            else
-                alert = '<div class="alert alert-danger" id="'+uniq+'">'+err+'</div>';
+        if (err.status)
+            alert = '<div class="alert alert-danger" id="'+uniq+'"><b>'+err.status +' :</b> '+ err.statusText+'</div>';
+        else
+            alert = '<div class="alert alert-danger" id="'+uniq+'">'+err+'</div>';
 
-            setTimeout(function() {
-                $('#'+uniq).remove();
-            }, 20000);
+        setTimeout(function() {
+            $('#'+uniq).remove();
+        }, 20000);
 
-            if (ctx)
-                return  $(ctx + ' *').first().before(alert);
+        if (ctx)
+            return  $(ctx + ' *').first().before(alert);
 
-            $('#content *').first().before(alert);
-        };
+        $('#content *').first().before(alert);
+    };
 
-        appInfo = function(m, ctx) {
-            var uniq = Uniq();
-            var alert = '<div class="alert alert-info" id="'+uniq+'">'+m+'</div>';
+    appInfo = function(m, ctx) {
+        var uniq = Uniq();
+        var alert = '<div class="alert alert-info" id="'+uniq+'">'+m+'</div>';
 
-            setTimeout(function() {
-                $('#'+uniq).remove();
-            }, 20000);
+        setTimeout(function() {
+            $('#'+uniq).remove();
+        }, 20000);
 
-            if (ctx)
-                return  $(ctx + ' *').first().before(alert);
+        if (ctx)
+            return  $(ctx + ' *').first().before(alert);
 
-            $('#content *').first().before(alert);
-        }
-    });
+        $('#content *').first().before(alert);
+    }
 })();
 
