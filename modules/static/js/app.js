@@ -1,6 +1,6 @@
 var appError; var _apiToken; var Uniq; var appInfo;
 
-(function() {
+
     var path = window.location.pathname.split('/');
     if (path.length > 2)
         _apiToken = path[1];
@@ -63,6 +63,7 @@ var appError; var _apiToken; var Uniq; var appInfo;
         return Math.random().toString().split('.').join('X');
     };
 
+(function($) {
     appError = function(err, ctx) {
         if (!err)
             return ;
@@ -98,5 +99,5 @@ var appError; var _apiToken; var Uniq; var appInfo;
 
         $('#content *').first().before(alert);
     }
-})();
+})(require(['jquery']));
 
