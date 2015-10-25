@@ -8,6 +8,9 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var ctx = require('ctx');
 var api = require('api');
+var mollify = require("mollify");
+var staticPath = __dirname + '/modules/static/';
+
 
 app.engine('dust', dust.engine({
     useHelpers: true
@@ -16,6 +19,10 @@ app.engine('dust', dust.engine({
 dust._.optimizers.format = function (ctx, node) {
     return node
 };
+
+app.use(mollify({
+    dir: staticPath
+}));
 
 app.set('view engine', 'dust');
 app.set('views', __dirname + '/modules/static/views');
@@ -26,7 +33,7 @@ app.set('view options', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(__dirname + '/modules/static/'));
+app.use(express.static(staticPath));
 
 app.use(session({
     secret: 'tripl tropl',
