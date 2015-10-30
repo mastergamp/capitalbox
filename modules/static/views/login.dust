@@ -1,5 +1,4 @@
-{>layout/}
-{<content}
+<div id="{uniq}">
     <div class="col-md-offset-4 col-md-4" style="margin-top: 40px" id="content">
         <h4 class="text-muted"><b>Please sign in</b></h4>
         <hr>
@@ -10,17 +9,17 @@
             <div class="btn btn-block btn-success" id="reg">Registration</div>
         </form>
 
-        {>breadcrumb/}
+        {>"views/breadcrumb.dust"/}
     </div>
     <script>
         require(['jquery', 'lodash', 'safe','jquery-block'], function($, _, safe) {
             $(function() {
-                var $main = $('#content');
+                var $main = $('#{uniq} #content');
                 var $form = $main.find('#loginform');
 
                 $form.on('click', '#reg', function() {
                     var $self = $(this);
-                    $main.block();
+                    $.blockUI();
                     safe.run(function(cb) {
                         require(['dst!views/registration.dust'], function(tpl) {
                             tpl({uniq: Uniq()}, safe.sure_result(cb, function(text) {
@@ -29,7 +28,7 @@
                             }));
                         });
                     }, function(err) {
-                        $main.unblock();
+                        $.unblockUI();
                         appError(err)
                     })
                 });
@@ -41,7 +40,7 @@
                         return memo;
                     }, {});
 
-                    $form.block();
+                    $.blockUI();
                     return safe.run(function(cb) {
                         require(['api'], function(api){
                             api.call('core.getUser', data, safe.sure(cb, function(user) {
@@ -50,16 +49,16 @@
 
                                 _apiToken = user._s_token;
                                 api.call('core.checkAccess', safe.sure_result(cb, function() {
-                                    window.location = '/'+user._s_token+'/main';
+                                    cliRedirect('/'+user._s_token+'/main/api');
                                 }));
                             }));
                         }, cb);
                     }, function(err) {
                        appError(err, '#loginform');
-                        $form.unblock();
+                        $.unblockUI();
                     });
                 });
             });
         }, appError);
     </script>
-{/content}
+</div>

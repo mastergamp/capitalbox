@@ -6,19 +6,25 @@ var safe = require('safe');
 var _ = require('lodash');
 var Error = api.Error;
 var moment = require('moment');
+var util = require('util');
+
+var tpl = function(name) {
+    return util.format('dst!views/%s.dust', name);
+};
 
 module.exports = function(app) {
+
     app.get('/', function(req, res) {
-       res.redirect('/login')
+        res.render('layout', {token: req.session.apiToken || 'fakeUser'});
     });
 
-    app.get('/login', function(req, res) {
-        res.render('login', {title: 'Login'});
+    app.get('/login/api', function(req, res, next) {
+        next(403);
     });
 
-    app.get('/logout', function(req, res) {
+    app.get('/logout/api', function(req, res, next) {
         delete req.session.apiToken;
-        res.redirect('/login');
+        next(403);
     });
 
     app.post('/jsonrpc', function(req, res, cb) {
@@ -46,9 +52,9 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/:token/main', function(req, res, cb) {
+    app.get('/:token/main/api', function(req, res, cb) {
         if (req.session.apiToken != req.params.token)
-            return res.redirect('/login');
+            return safe.back(cb, 403);
 
         var token = req.params.token;
         api.core.checkAccess(token, safe.sure(cb, function() {
@@ -60,8 +66,8 @@ module.exports = function(app) {
 
             var where = {
               _dt: {
-                  $gte: moment(filter.from, defFormat).toISOString(),
-                  $lte: moment(filter.to, defFormat).toISOString()
+                  $gte: moment(filter.from, defFormat).startOf('day').toISOString(),
+                  $lte: moment(filter.to, defFormat).endOf('day').toISOString()
               },
               _s_userToken: token
             };
@@ -78,14 +84,22 @@ module.exports = function(app) {
                     r._dt = moment(r._dt).format('DD MMM YYYY HH:mm');
                 });
 
-                res.render('main', {
+                res.send({
+                    title: 'CapitalBox',
+                    tpls: [tpl('main'), tpl('header'), tpl('breadcrumb'), tpl('finance_table_item'), 'bootstrap'],
                     total: total,
                     finance: finance,
-                    title: 'CapitalBox',
                     filter: filter
                 });
             }));
 
        }));
+    });
+
+    app.use(function(err, req, res, next) {
+        if(err == 403);
+        return res.send({title: 'Login', tpls: [tpl('login'), tpl('breadcrumb'), 'bootstrap']});
+
+        next();
     });
 };

@@ -1,6 +1,5 @@
-{>layout/}
-{<content}
-{>header/}
+<div id="{uniq}">
+{>"views/header.dust"/}
     <!--Body-->
     <div class="col-md-offset-2 col-md-8" id="content">
         <!--Search-->
@@ -34,28 +33,41 @@
                 </thead>
                 <tbody>
                     {#finance}
-                        {> finance_table_item/}
+                        {> "views/finance_table_item.dust"/}
                     {/finance}
                 </tbody>
             </table>
         </div>
-        {>breadcrumb/}
+        {>"views/breadcrumb.dust"/}
     </div>
     <script>
-        require(['jquery', 'safe', 'lodash', 'jquery-block', 'datepicker', 'dust'], function($, safe, _) {
+        require(['jquery', 'safe', 'lodash', 'datepicker'], function($, safe, _) {
             $(function() {
-                var $main = $('#content');
+                var $main = $('#{uniq} #content');
                 var $search = $main.find('#formsearch');
+                var $popovers = $('[data-toggle="popover"]');
+
+                $popovers.popover();
 
                 $search.find('input').each(function() {
-                    $(this).datepicker({format: 'dd-mm-yyyy'});
+                    $(this).datepicker({format: 'dd-mm-yyyy', orientation: 'top'});
+                });
+
+                $search.on('submit', function(e) {
+                    e.preventDefault();
+                    var data = _.reduce($search.serializeArray(), function(memo, i) {
+                        memo[i.name] = i.value;
+                        return memo;
+                    }, {});
+
+                    cliRedirect('/'+_apiToken+'/main/api?from='+data.from+'&to='+data.to);
                 });
 
                 $main.on('click', '.remove', function() {
                    var $self = $(this);
                     var _id = $self.data('_id');
 
-                    $main.block();
+                    $.blockUI();
                     safe.run(function(cb) {
                        require(['api'], function(api) {
                            api.call('finance.removeFinance', _id, safe.sure_result(cb, function() {
@@ -63,15 +75,16 @@
                            }));
                        }, cb);
                     }, function(err) {
-                        $main.unblock();
+                        $.unblockUI();
                         appError(err)
                     });
                 });
 
                 $main.on('click', '#addFinance, .edit', function() {
+                    $popovers.popover('hide');
                    var $self = $(this);
                     var _id = $self.data('_id');
-                    $main.block();
+                    $.blockUI();
                     safe.run(function(cb) {
                         require(['dst!views/add_finance_modal.dust', 'api'], function(tpl, api) {
                             safe.run(function(cb) {
@@ -91,10 +104,10 @@
                         }, cb);
                     }, function(err) {
                         appError(err);
-                        $main.unblock();
+                        $.unblockUI();
                     })
                 });
             });
         }, appError);
     </script>
-{/content}
+</div>

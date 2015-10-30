@@ -68,7 +68,7 @@
                         appError(err, modalHeader);
                         $modal.unblock();
                         if (!err)
-                            window.location.reload();
+                            cliRedirect('/'+_apiToken+'/main/api')
                 });
             });
         });

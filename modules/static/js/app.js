@@ -1,69 +1,87 @@
-var appError; var _apiToken; var Uniq; var appInfo;
+var appError; var Uniq; var appInfo; var cliRedirect;
 
+function loadCss(url) {
+    var link = document.createElement("link");
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.href = url;
+    document.getElementsByTagName("head")[0].appendChild(link);
+}
 
-    var path = window.location.pathname.split('/');
-    if (path.length > 2)
-        _apiToken = path[1];
-    else
-        _apiToken = 'fakeUser';
-
-    function loadCss(url) {
-        var link = document.createElement("link");
-        link.type = "text/css";
-        link.rel = "stylesheet";
-        link.href = url;
-        document.getElementsByTagName("head")[0].appendChild(link);
-    }
-
-    require.config({
-        baseUrl: '..',
-        paths: {
-            jquery: 'js/lib/jquery',
-            'jquery-block': 'js/lib/jquery-block',
-            bootstrap: 'js/lib/bootstrap',
-            api: 'js/lib/api',
-            safe: 'js/lib/safe',
-            lodash: 'js/lib/lodash',
-            moment: 'js/lib/moment',
-            datepicker: 'js/lib/bootstrap-datepicker',
-            jsonrpc: 'js/lib/jquery.jsonrpcclient',
-            dust: 'js/lib/dust-full',
-            dst: 'js/lib/dst',
-            text: 'js/lib/text',
-            'dust-helpers': 'js/lib/dust-helpers'
+require.config({
+    baseUrl: '..',
+    paths: {
+        jquery: 'js/lib/jquery',
+        'jquery-block': 'js/lib/jquery-block',
+        bootstrap: 'js/lib/bootstrap',
+        api: 'js/lib/api',
+        safe: 'js/lib/safe',
+        lodash: 'js/lib/lodash',
+        moment: 'js/lib/moment',
+        datepicker: 'js/lib/bootstrap-datepicker',
+        jsonrpc: 'js/lib/jquery.jsonrpcclient',
+        dust: 'js/lib/dust-full',
+        dst: 'js/lib/dst',
+        text: 'js/lib/text',
+        'dust-helpers': 'js/lib/dust-helpers'
+    },
+    shim: {
+        bootstrap: {
+            deps: ['jquery']
         },
-        shim: {
-            bootstrap: {
-                deps: ['jquery']
-            },
-            datepicker: {
-                deps: ['bootstrap'],
-                init: function() {
-                    loadCss('../css/bootstrap-datepicker.css')
-                }
-            },
-            'jquery-block': {
-                deps: ['jquery']
-            },
-            jsonrpc: {
-                deps: ['jquery']
-            },
-            dust: {
-                init: function() {
-                    require(['dust-helpers']);
-                }
-            },
-            dst: {
-                deps: ['dust']
+        datepicker: {
+            deps: ['bootstrap'],
+            init: function() {
+                loadCss('../css/bootstrap-datepicker.css');
             }
+        },
+        'jquery-block': {
+            deps: ['jquery']
+        },
+        jsonrpc: {
+            deps: ['jquery']
+        },
+        dust: {
+            init: function() {
+                require(['dust-helpers']);
+            }
+        },
+        dst: {
+            deps: ['dust']
         }
-    });
+    }
+});
 
-    Uniq = function() {
-        return Math.random().toString().split('.').join('X');
+Uniq = function() {
+    return Math.random().toString().split('.').join('X');
+};
+
+require(['jquery', 'safe', 'jquery-block'], function($, safe) {
+    var $body = $('body');
+
+    cliRedirect = function(path) {
+        $.blockUI();
+        $.get(path, function(data) {
+            safe.run(function(cb) {
+                require(data.tpls, function(tpl) {
+                    data.uniq = Uniq();
+                    tpl(data, safe.sure_result(cb, function(text) {
+                        $body.empty();
+                        var $text = $(text);
+                        $body.append($text);
+                    }));
+                }, cb);
+            }, function(err) {
+                $.unblockUI();
+                if (err)
+                    console.error(err);
+            })
+        }).fail(function(err) {
+            $.unblockUI();
+            console.error(err);
+        });
     };
 
-require(['jquery'], function($) {
     appError = function(err, ctx) {
         if (!err)
             return ;

@@ -11,15 +11,12 @@
         {_i_val} <span class="glyphicon glyphicon-ruble"></span>
     </td>
     <td>
-        <div class="dropdown">
-            <div class="btn btn-xs btn-default dropdown-toggle pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Action
-                <span class="caret"></span>
-            </div>
-            <ul class="dropdown-menu" >
-                <li><a href="#" class="edit" data-_id="{_id}"><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
-                <li><a href="#" class="remove" data-_id="{_id}"><span class="glyphicon glyphicon-trash"></span> Delete</a></li>
-            </ul>
-        </div>
+        <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="popover" data-html="true" data-placement="left"
+                data-delay="3"
+                data-content="
+                <div class='btn btn-default btn-xs btn-block edit' data-_id='{_id}'><span class='glyphicon glyphicon-pencil'></span> Edit</div>
+                <div class='btn btn-danger btn-xs btn-block remove' data-_id='{_id}'><span class='glyphicon glyphicon-trash'></span> Remove</div>
+                "
+                >action</button>
     </td>
 </tr>

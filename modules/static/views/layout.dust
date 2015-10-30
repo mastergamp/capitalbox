@@ -6,15 +6,18 @@
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
     <script src="../js/require.js"></script>
     <script src="../js/app.js"></script>
+    <script>
+        var _apiToken = '{token}';
+    </script>
 </head>
-<body>
-<div class="row container-fluid" style="margin: 0">
-    {+content}
-
-    {/content}
-</div>
-<script>
-    require(['bootstrap']);
+<body></body>
+<script defer>
+    require(['jquery', 'safe', 'jquery-block'], function($) {
+        var $body = $('body');
+        cliRedirect("/"+_apiToken+"/main/api");
+    }, function(err) {
+        if (err)
+            console.error(err);
+    });
 </script>
-</body>
 </html>
