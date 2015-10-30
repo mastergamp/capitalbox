@@ -1,45 +1,45 @@
 <div id="{uniq}">
 {>"views/header.dust"/}
     <!--Body-->
-    <div class="col-md-offset-2 col-md-8" id="content">
-        <!--Search-->
-        <form class="form-inline" id="formsearch">
-            <div class="form-group-sm form-group">
-                <input type="text" value="{filter.from}" class="form-control from" name="from" placeholder="From"/>&nbsp
-                <input type="text" value="{filter.to}" class="form-control to" name="to" placeholder="To"/>&nbsp
-            </div>
-            <button class="btn btn-default btn-sm"><span class="glyphicon glyphicon glyphicon-search"></span> Find</button>
-        </form>
-        <hr>
-        <div class="row">
-            <div class="col-xs-4">
-                <div class="btn-default btn btn-sm disabled">Total: {total} <span class="glyphicon glyphicon-ruble"></span></div>
-            </div>
-            <div class="col-xs-8">
-                <div class="btn btn-default btn-sm pull-right" id="addFinance"><span class="glyphicon glyphicon-rub"></span>Add</div>
-            </div>
-        </div>
-        <!--Finance-->
-        <div class="row container-fluid">
-            <table class="table table-striped table-condensed h6" id="capitalbox">
-                <thead class="text-muted">
-                    <tr>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Desc</th>
-                        <th>Value</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {#finance}
-                        {> "views/finance_table_item.dust"/}
-                    {/finance}
-                </tbody>
-            </table>
-        </div>
-        {>"views/breadcrumb.dust"/}
-    </div>
+    <div class="container" id="content">
+		<!--Search-->
+		<form class="form-inline" id="formsearch">
+			<div class="form-group-sm form-group">
+				<input type="text" value="{filter.from}" class="form-control from" name="from" placeholder="From"/>&nbsp
+				<input type="text" value="{filter.to}" class="form-control to" name="to" placeholder="To"/>&nbsp
+			</div>
+			<button class="btn btn-default btn-sm"><span class="glyphicon glyphicon glyphicon-search"></span> Find</button>
+		</form>
+		<hr>
+		<div class="row">
+			<div class="col-xs-4">
+				<div class="btn-default btn btn-sm disabled">Total: {total} <span class="glyphicon glyphicon-ruble"></span></div>
+			</div>
+			<div class="col-xs-8">
+				<div class="btn btn-default btn-sm pull-right" id="addFinance"><span class="glyphicon glyphicon-rub"></span>Add</div>
+			</div>
+		</div>
+		<!--Finance-->
+		<div class="row container-fluid">
+			<table class="table table-striped table-condensed h6" id="capitalbox">
+				<thead class="text-muted">
+					<tr>
+						<th>Date</th>
+						<th>Type</th>
+						<th>Desc</th>
+						<th>Value</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{#finance}
+						{> "views/finance_table_item.dust"/}
+					{/finance}
+				</tbody>
+			</table>
+		</div>
+		{>"views/breadcrumb.dust"/}
+	</div>	
     <script>
         require(['jquery', 'safe', 'lodash', 'datepicker'], function($, safe, _) {
             $(function() {
