@@ -86,7 +86,7 @@ module.exports = function(app) {
 
                 res.send({
                     title: 'CapitalBox',
-                    tpls: [tpl('main'), tpl('header'), tpl('breadcrumb'), tpl('finance_table_item'), 'bootstrap'],
+                    tpls: [tpl('main'), tpl('header'), tpl('finance_table_item')],
                     total: total,
                     finance: finance,
                     filter: filter
@@ -98,7 +98,7 @@ module.exports = function(app) {
 
     app.use(function(err, req, res, next) {
         if(err == 403);
-        return res.send({title: 'Login', tpls: [tpl('login'), tpl('breadcrumb'), 'bootstrap']});
+        return res.send({title: 'Login', tpls: [tpl('login')]});
 
         next();
     });

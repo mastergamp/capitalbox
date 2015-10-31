@@ -112,7 +112,7 @@
         // override these in your code to change the default behavior and style
         $.blockUI.defaults = {
             // message displayed when blocking (use null for no message)
-            message:  '<h4><b>Loading</b></h4>',
+            message:  '<div class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</div>',
 
             title: null,		// title string; only used when theme == true
             draggable: true,	// only used when theme == true (requires jquery-ui.js to be loaded)
@@ -129,9 +129,6 @@
                 top:		'40%',
                 left:		'35%',
                 textAlign:	'center',
-                color:		'#000',
-                border:		'3px solid #aaa',
-                backgroundColor:'#fff',
                 cursor:		'wait'
             },
 

@@ -12,9 +12,11 @@
 </head>
 <body></body>
 <script defer>
-    require(['jquery', 'safe', 'jquery-block'], function($) {
-        var $body = $('body');
-        cliRedirect("/"+_apiToken+"/main/api");
+    require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($) {
+        $(function() {
+            var $body = $('body');
+            cliRedirect("/"+_apiToken+"/main/api");
+        });
     }, function(err) {
         if (err)
             console.error(err);
