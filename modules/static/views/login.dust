@@ -33,8 +33,7 @@
                     })
                 });
 
-                $form.on('click', '#signin', function() {
-                    var $self = $(this);
+                function signIn() {
                     var data = _.reduce($form.serializeArray(), function(memo, i) {
                         memo[i.name] = i.value;
                         return memo;
@@ -45,7 +44,7 @@
                         require(['api'], function(api){
                             api.call('core.getUser', data, safe.sure(cb, function(user) {
                                 if (!user)
-                                   return cb({status: 400, statusText: 'Login or Password incorrect.'});
+                                    return cb({status: 400, statusText: 'Login or Password incorrect.'});
 
                                 _apiToken = user._s_token;
                                 api.call('core.checkAccess', safe.sure_result(cb, function() {
@@ -54,10 +53,19 @@
                             }));
                         }, cb);
                     }, function(err) {
-                       appError(err, '#loginform');
+                        appError(err, '#loginform');
                         $.unblockUI();
                     });
+                }
+
+                $form.on('keydown', function(e) {
+                   if (e.keyCode != 13)
+                        return e.stopPropagation();
+
+                   signIn();
                 });
+
+                $form.on('click', '#signin', signIn);
             });
         }, appError);
     </script>
