@@ -10,11 +10,12 @@
         var _apiToken = '{token}';
     </script>
 </head>
-<body></body>
+<body>
+    <div id="body"></div>
+</body>
 <script defer>
     require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($) {
         $(function() {
-            var $body = $('body');
             cliRedirect("/"+_apiToken+"/main/api");
         });
     }, function(err) {

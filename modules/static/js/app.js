@@ -57,7 +57,7 @@ Uniq = function() {
 };
 
 require(['jquery', 'safe', 'jquery-block'], function($, safe) {
-    var $body = $('body');
+    var $body = $('body #body');
 
     cliRedirect = function(path) {
         $.blockUI();
