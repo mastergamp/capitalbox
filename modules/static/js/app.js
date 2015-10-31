@@ -66,9 +66,8 @@ require(['jquery', 'safe', 'jquery-block'], function($, safe) {
                 require(data.tpls, function(tpl) {
                     data.uniq = Uniq();
                     tpl(data, safe.sure_result(cb, function(text) {
-                        $body.empty();
                         var $text = $(text);
-                        $body.append($text);
+                        $body.empty().append($text);
                     }));
                 }, cb);
             }, function(err) {
