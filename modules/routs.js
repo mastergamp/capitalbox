@@ -96,9 +96,41 @@ module.exports = function(app) {
        }));
     });
 
+    app.get('/:token/charts/api', function(req, res, next) {
+        if (req.session.apiToken != req.params.token)
+            return safe.back(next, 403);
+
+        var token = req.params.token;
+        api.finance.getFinance(token, {}, {sort: {_dt: -1}}, safe.sure(next, function(finance) {
+            finance = _.groupBy(finance, function(f) { return moment.utc(f._dt).month()});
+            finance = _.map(finance, function(v, k) {
+                var value = _.reduce(v, function(memo, i) {
+                    if (i._s_type == 'd')
+                        memo += i._i_val;
+                    else
+                        memo -= i._i_val;
+                    return memo;
+                }, 0);
+               return {month: k, value: value};
+            });
+            var maxHeigh = _.max(finance, function(r) {return r.value}).value;
+            var maxWidth = finance.length;
+            _.each(finance, function(r) {
+                r.month = moment.utc(r.month, 'MM').format('YYYY-MM-DD');
+                r.percentH = r.value*100/maxHeigh;
+                r.percentW = 100/maxWidth;
+            });
+            res.send({
+                title: 'Charts',
+                tpls: [tpl('charts'), tpl('header')],
+                finance: finance
+            });
+        }));
+    });
+
     app.use(function(err, req, res, next) {
         if(err == 403);
-        return res.send({title: 'Login', tpls: [tpl('login')]});
+            return res.send({title: 'Login', tpls: [tpl('login')]});
 
         next();
     });

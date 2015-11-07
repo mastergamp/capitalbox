@@ -67,8 +67,11 @@
                      }, function(err) {
                         appError(err, modalHeader);
                         $modal.unblock();
-                        if (!err)
+                        if (!err) {
+                            $modal.modal('hide');
                             cliRedirect('/'+_apiToken+'/main/api')
+                        }
+
                 });
             });
         });

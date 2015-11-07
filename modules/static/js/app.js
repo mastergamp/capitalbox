@@ -23,7 +23,8 @@ require.config({
         dust: 'js/lib/dust-full',
         dst: 'js/lib/dst',
         text: 'js/lib/text',
-        'dust-helpers': 'js/lib/dust-helpers'
+        'dust-helpers': 'js/lib/dust-helpers',
+        d3: 'js/lib/d3'
     },
     shim: {
         bootstrap: {
@@ -65,6 +66,7 @@ require(['jquery', 'safe', 'jquery-block'], function($, safe) {
             safe.run(function(cb) {
                 require(data.tpls, function(tpl) {
                     data.uniq = Uniq();
+                    data.token = _apiToken;
                     tpl(data, safe.sure_result(cb, function(text) {
                         var $text = $(text);
                         $body.empty().append($text);

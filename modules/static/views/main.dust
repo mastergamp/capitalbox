@@ -72,6 +72,7 @@
                        require(['api'], function(api) {
                            api.call('finance.removeFinance', _id, safe.sure_result(cb, function() {
                                $self.closest('tr').remove();
+                               cliRedirect('/'+_apiToken+'/main/api');
                            }));
                        }, cb);
                     }, function(err) {
