@@ -12,7 +12,7 @@
 			</div>
 			<div class="navbar-collapse collapse out" id="header-menu" aria-expanded="true">
 				<ul class="nav navbar-nav pull-right">
-					<li><a href="#" data-href="/{token}/charts/api">Charts</a></li>
+					<!--li><a href="#" data-href="/{token}/charts/api">Charts</a></li-->
 					<li><a data-href="/logout/api" href="#">Log out</a></li>
 				</ul>
 			</div>

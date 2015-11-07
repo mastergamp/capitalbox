@@ -1,0 +1,13 @@
+<div id="{uniq}">
+    {>"views/header.dust"/}
+    <style>
+    </style>
+    <div class="container" id="content">
+        <div>
+            <svg height="360px" width="100%">
+
+            </svg>
+        </div>
+        {>"views/breadcrumb.dust"/}
+    </div>
+</div>
