@@ -78,8 +78,15 @@ module.exports = function(app) {
                 },
                 function(cb) {
                     api.finance.getTotal(token, {_s_userToken: token}, {sort: {_dt: -1}}, cb);
+                },
+                function(cb) {
+                    api.finance.getFinance(token, {_s_userToken: token, _s_type: 'd'}, cb);
                 }
-            ], safe.sure_spread(cb, function(finance, total) {
+            ], safe.sure_spread(cb, function(finance, total, available) {
+                available = _.reduce(available, function(memo, i) {
+                    memo += i._i_val/2;
+                    return memo;
+                }, 0);
                 _.each(finance, function(r) {
                     r._dt = moment(r._dt).format('DD MMM YYYY HH:mm');
                 });
@@ -89,7 +96,8 @@ module.exports = function(app) {
                     tpls: [tpl('main'), tpl('header'), tpl('finance_table_item')],
                     total: total,
                     finance: finance,
-                    filter: filter
+                    filter: filter,
+                    available: _.round(available)
                 });
             }));
 
