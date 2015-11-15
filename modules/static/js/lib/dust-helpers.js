@@ -229,6 +229,13 @@ var helpers = {
     return chunk;
   },
 
+  "toJSON": function(chunk, context, bodies, params) {
+    try{
+      chunk.write(JSON.stringify(context.stack.head[params.data]));
+    }
+    catch(err) {}
+    return chunk;
+  },
   /**
    * {@math}
    * @param key first value

@@ -24,9 +24,12 @@ require.config({
         dst: 'js/lib/dst',
         text: 'js/lib/text',
         'dust-helpers': 'js/lib/dust-helpers',
-        d3: 'js/lib/d3'
+        charts: 'js/lib/charts'
     },
     shim: {
+        charts: {
+          deps: ['jquery']
+        },
         bootstrap: {
             deps: ['jquery']
         },
@@ -120,6 +123,6 @@ require(['jquery', 'safe', 'jquery-block'], function($, safe) {
     }
 }, function(err) {
     if (err)
-        console.error(err);
+        console.error(err.trace);
 });
 

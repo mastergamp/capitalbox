@@ -13,7 +13,7 @@
 <body>
     <div id="body"></div>
 </body>
-<script defer>
+<script async>
     require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($) {
         $(function() {
             cliRedirect("/"+_apiToken+"/main/api");

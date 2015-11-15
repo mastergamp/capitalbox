@@ -3,11 +3,52 @@
     <style>
     </style>
     <div class="container" id="content">
-        <div>
-            <svg height="360px" width="100%">
-
-            </svg>
-        </div>
+        <div class="row-fluid" id="chart"></div>
         {>"views/breadcrumb.dust"/}
     </div>
+    <script>
+        require(['jquery', 'charts'], function($) {
+            $(function() {
+               var $main = $('#{uniq} #content');
+                var $charts = $main.find('#chart');
+
+                $charts.highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'All information'
+                    },
+                    xAxis: {
+                        categories: {@toJSON data="date"/},
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Debet / Credit'
+                        }
+                    },
+                    tooltip: {
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: 'Debet',
+                        data: {@toJSON data="debet"/}
+
+                    }, {
+                        name: 'Credit',
+                        data: {@toJSON data="credit"/}
+                    }]
+                });
+            });
+        }, appError);
+    </script>
 </div>
