@@ -13,14 +13,17 @@
 		<hr>
         <!--TOTAL-->
 		<div class="row">
-			<div class="col-xs-4">
+			<div class="col-sm-8 col-xs-12">
                 <div class="btn-group">
                     <div class="btn-default btn btn-sm disabled">Total: {total} <span class="glyphicon glyphicon-ruble"></span></div>
                     <div class="btn-default btn btn-sm disabled">Available: {available} <span class="glyphicon glyphicon-ruble"></span></div>
                 </div>
 			</div>
-			<div class="col-xs-8">
-				<div class="btn btn-default btn-sm pull-right" id="addFinance"><span class="glyphicon glyphicon-rub"></span>Add</div>
+            <div class="visible-xs col-xs-12" style="margin-bottom: 5px"></div>
+			<div class="col-sm-4 col-xs-12">
+                <div class="btn-group pull-right">
+                    <div class="btn btn-default btn-sm" id="addFinance"><span class="glyphicon glyphicon-rub"></span>Add</div>
+                </div>
 			</div>
 		</div>
 		<!--Finance-->
