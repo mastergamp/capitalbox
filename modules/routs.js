@@ -101,7 +101,7 @@ module.exports = function(app) {
             return safe.back(next, 403);
 
         var token = req.params.token;
-        api.finance.getFinance(token, {}, {sort: {_dt: -1}}, safe.sure(next, function(finance) {
+        api.finance.getFinance(token, {_s_userToken: token}, {sort: {_dt: -1}}, safe.sure(next, function(finance) {
             finance = _.groupBy(finance, function(f) { return moment.utc(f._dt).format("YYYY MMM")});
             finance = _.map(finance, function(v, k) {
                 var value = _.reduce(v, function(memo, i) {
