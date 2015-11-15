@@ -19,7 +19,7 @@
                     <div class="btn-default btn btn-sm disabled">Available: {available} <span class="glyphicon glyphicon-ruble"></span></div>
                 </div>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-xs-8">
 				<div class="btn btn-default btn-sm pull-right" id="addFinance"><span class="glyphicon glyphicon-rub"></span>Add</div>
 			</div>
 		</div>
