@@ -1,13 +1,14 @@
 (function(root, factory) {
   if (typeof define === 'function' && define.amd && define.amd.dust === true) {
-    define(['dust.core'], factory);
+    define(['dust.core', 'moment'], factory);
   } else if (typeof exports === 'object') {
-    module.exports = factory(require('dustjs-linkedin'));
+    module.exports = factory(require('dustjs-linkedin'), require('moment'));
   } else {
-    factory(root.dust);
+    require(["moment"], function(moment) {
+      factory(root.dust, moment);
+    });
   }
-}(this, function(dust) {
-
+}(this, function(dust, moment) {
 function log(helper, msg, level) {
   level = level || "INFO";
   helper = helper ? '{@' + helper + '}: ' : '';
@@ -235,6 +236,17 @@ var helpers = {
     }
     catch(err) {}
     return chunk;
+  },
+  "moment": function(chunk, context, bodies, params) {
+      var date;
+      try{
+        date = moment(context.stack.head[params.data], params.def).format(params.format);
+        chunk.write(date);
+      }
+      catch(err) {}
+      finally{
+        return chunk;
+      }
   },
   /**
    * {@math}

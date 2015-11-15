@@ -1,5 +1,5 @@
 <tr>
-    <td>{_dt}</td>
+    <td>{@moment data="_dt" format="YYYY MMM DD HH:mm:ss" /}</td>
     <td>
         {@eq key=_s_type value="d" }Debet <span class="text-success glyphicon glyphicon-plus"></span>{/eq}
         {@eq key=_s_type value="c" }Credit <span class="text-danger glyphicon glyphicon-minus">{/eq}
