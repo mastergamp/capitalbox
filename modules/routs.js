@@ -80,21 +80,13 @@ module.exports = function(app) {
                     api.finance.getTotal(token, {_s_userToken: token}, {sort: {_dt: -1}}, cb);
                 },
                 function(cb) {
-                    api.finance.getFinance(token, {_s_userToken: token, _s_type: 'd'}, cb);
+                    api.finance.getTotal(token, {_s_userToken: token}, {availability: 1}, cb);
                 }
             ], safe.sure_spread(cb, function(finance, total, available) {
-                available = _.reduce(available, function(memo, i) {
-                    memo += i._i_val/2;
-                    return memo;
-                }, 0);
-                _.each(finance, function(r) {
-                    r._dt = moment(r._dt).format('DD MMM YYYY HH:mm');
-                });
-
                 res.send({
                     title: 'CapitalBox',
                     tpls: [tpl('main'), tpl('header'), tpl('finance_table_item')],
-                    total: total,
+                    total: _.round(total),
                     finance: finance,
                     filter: filter,
                     available: _.round(available)

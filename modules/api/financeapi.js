@@ -76,12 +76,12 @@ FinanceApi.prototype.getTotal = function(token, query, opts, cb) {
     ], safe.sure_spread(cb, function(finance, user) {
         var total = _.reduce(finance, function (memo, i) {
             if (i._s_type == 'd')
-                memo += Number(i._i_val);
+                memo += Number(opts.availability ? i._i_val/2 : i._i_val);
             else
                 memo -= Number(i._i_val);
 
             return memo;
-        }, Number(user._i_deposit));
+        }, Number(opts.availability ? user._i_deposit/2 : user._i_deposit));
         cb(null, total);
     }));
 };
