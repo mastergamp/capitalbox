@@ -2,7 +2,7 @@
     <nav class="navbar navbar-default navbar-static-top navbar-inverse">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#" data-href="/{token}/main/api">CapitalBox [<span class="text-info">alpha</span>]</a>
+				<a class="navbar-brand" href="#" data-href="/{token}/main/api">CapitalBox [<span class="text-info">v1.0</span>]</a>
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-menu" aria-expanded="true">
 					<span class="sr-only">Toggle navigation</span>
 					<span class="icon-bar"></span>
