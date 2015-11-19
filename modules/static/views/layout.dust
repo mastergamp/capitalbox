@@ -6,15 +6,6 @@
 	<include></include>
     <script>
 		var appError; var Uniq; var appInfo; var cliRedirect; var _apiToken = '{token}';
-
-		function loadCss(url) {
-			var link = document.createElement("link");
-			link.type = "text/css";
-			link.rel = "stylesheet";
-			link.href = url;
-			document.getElementsByTagName("head")[0].appendChild(link);
-		}
-
 		require.config({
 			baseUrl: '..',
 			paths: {
@@ -42,10 +33,7 @@
 					deps: ['jquery', 'css!../css/bootstrap']
 				},
 				datepicker: {
-					deps: ['bootstrap'],
-					init: function() {
-						loadCss('../css/bootstrap-datepicker.css');
-					}
+					deps: ['bootstrap', 'css!../css/bootstrap-datepicker.css']
 				},
 				'jquery-block': {
 					deps: ['jquery']
