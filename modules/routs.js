@@ -22,11 +22,9 @@ module.exports = function(app) {
     
     var files = [
         {type: 'script', path: __dirname + '/static/js/require.js'},
-        {type: 'script', path: __dirname + '/static/js/app.js'},
-        {type: 'css', path: __dirname + '/static/css/bootstrap.css'}
     ];
     
-    var layoutHTML = '';
+    var require = '';
     
     _.each(files, function(file) {
         var str;
@@ -41,12 +39,12 @@ module.exports = function(app) {
             str = util.format('%s%s%s', '<style>', str, '</style>');
         }
             
-        layoutHTML += str;
+        require += str;
     });
     
     app.get('/', function(req, res, next) {
         res.render('layout', {token: req.session.apiToken || 'fakeUser'}, safe.sure(next, function(html) {
-            html = html.replace(/<include><\/include>/, layoutHTML);
+            html = html.replace(/<include><\/include>/, require);
             res.send(html);
         }));
     });
