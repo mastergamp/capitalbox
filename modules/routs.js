@@ -7,15 +7,48 @@ var _ = require('lodash');
 var Error = api.Error;
 var moment = require('moment');
 var util = require('util');
+var fs = require('fs');
+var ugli = require('uglify-js');
 
 var tpl = function(name) {
     return util.format('dst!views/%s.dust', name);
 };
 
 module.exports = function(app) {
-
-    app.get('/', function(req, res) {
-        res.render('layout', {token: req.session.apiToken || 'fakeUser'});
+    app.use(function(req, res, next) {
+        req.header('Cache-Control', 'max-age=7200');
+        next();
+    });
+    
+    var files = [
+        {type: 'script', path: __dirname + '/static/js/require.js'},
+        {type: 'script', path: __dirname + '/static/js/app.js'},
+        {type: 'css', path: __dirname + '/static/css/bootstrap.css'}
+    ];
+    
+    var layoutHTML = '';
+    
+    _.each(files, function(file) {
+        var str;
+        
+        if (file.type == 'script') {
+            str = ugli.minify(file.path).code;
+            str = util.format('%s%s%s', '<script>', str, '</script>');
+        }
+            
+        if (file.type == 'css') {
+            str = fs.readFileSync(file.path);
+            str = util.format('%s%s%s', '<style>', str, '</style>');
+        }
+            
+        layoutHTML += str;
+    });
+    
+    app.get('/', function(req, res, next) {
+        res.render('layout', {token: req.session.apiToken || 'fakeUser'}, safe.sure(next, function(html) {
+            html = html.replace(/<include><\/include>/, layoutHTML);
+            res.send(html);
+        }));
     });
 
     app.get('/login/api', function(req, res, next) {
