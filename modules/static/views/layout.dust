@@ -38,7 +38,10 @@
 					deps: ['jquery']
 				},
 				bootstrap: {
-					deps: ['jquery']
+					deps: ['jquery'],
+					init: function() {
+						loadCss('../css/bootstrap.css');
+					}
 				},
 				datepicker: {
 					deps: ['bootstrap'],
