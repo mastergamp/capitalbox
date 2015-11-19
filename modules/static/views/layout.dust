@@ -82,6 +82,9 @@
 				});
 			};
 
+			cliRedirect("/"+_apiToken+"/main/api");
+			require(['bootstrap', 'dst!views/breadcrumb.dust']);
+			
 			appError = function(err, ctx) {
 				if (!err)
 					return ;
@@ -126,14 +129,4 @@
 <body>
     <div id="body"></div>
 </body>
-<script>
-    require(['jquery', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($) {
-        $(function() {
-        	cliRedirect("/"+_apiToken+"/main/api");
-        });
-    }, function(err) {
-        if (err)
-            console.error(err);
-    });
-</script>
 </html>
