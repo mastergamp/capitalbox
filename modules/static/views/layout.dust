@@ -14,6 +14,7 @@
 <script>
     require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($) {
         $(function() {
+            console.log(_apiToken);
             cliRedirect("/"+_apiToken+"/main/api");
         });
     }, function(err) {
