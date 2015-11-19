@@ -3,16 +3,16 @@
 <head>
     <title>{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 </head>
 <body>
-    <div id="body"></div>
+    <div id="body">Loading... Please wait.</div>
 </body>
 <script src="../js/require.js"></script>
 <script src="../js/app.js"></script>
 <script>
     var _apiToken = '{token}';
 </script>
+<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 <script>
     require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($) {
         $(function() {
