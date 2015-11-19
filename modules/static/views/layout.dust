@@ -31,14 +31,15 @@
 				dst: 'js/lib/dst',
 				text: 'js/lib/text',
 				'dust-helpers': 'js/lib/dust-helpers',
-				charts: 'js/lib/charts'
+				charts: 'js/lib/charts',
+				css: 'js/lib/css'
 			},
 			shim: {
 				charts: {
 					deps: ['jquery']
 				},
 				bootstrap: {
-					deps: ['jquery']
+					deps: ['jquery', 'css!../css/bootstrap']
 				},
 				datepicker: {
 					deps: ['bootstrap'],
@@ -136,7 +137,6 @@
 </head>
 <body>
     <div id="body"></div>
-    <link rel="stylesheet" href="../css/bootstrap.css"/>
 </body>
 <script>
     require(['jquery', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($) {
