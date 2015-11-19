@@ -4,7 +4,6 @@
     <title>{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<include></include>
-	<link rel="stylesheet" href="../css/bootstrap.css">
     <script>
 		var appError; var Uniq; var appInfo; var cliRedirect; var _apiToken = '{token}';
 
@@ -139,9 +138,20 @@
     <div id="body"></div>
 </body>
 <script>
-    require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($) {
+    require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($, safe) {
         $(function() {
-            cliRedirect("/"+_apiToken+"/main/api");
+        	safe.parallel([
+        		function(cb) {
+        			loadCss('../css/bootstrap.css');
+        		},
+        		function(cb) {
+					cliRedirect("/"+_apiToken+"/main/api");
+        		}
+        	], function(err) {
+        		if (err)
+        			console.error(err);
+        	});
+            
         });
     }, function(err) {
         if (err)
