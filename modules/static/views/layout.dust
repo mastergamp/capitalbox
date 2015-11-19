@@ -136,22 +136,12 @@
 </head>
 <body>
     <div id="body"></div>
+    <link rel="stylesheet" href="../css/bootstrap.css"/>
 </body>
 <script>
-    require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($, safe) {
+    require(['jquery', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($) {
         $(function() {
-        	safe.parallel([
-        		function(cb) {
-        			loadCss('../css/bootstrap.css');
-        		},
-        		function(cb) {
-					cliRedirect("/"+_apiToken+"/main/api");
-        		}
-        	], function(err) {
-        		if (err)
-        			console.error(err);
-        	});
-            
+        	cliRedirect("/"+_apiToken+"/main/api");
         });
     }, function(err) {
         if (err)
