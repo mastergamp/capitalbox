@@ -9,19 +9,18 @@ var moment = require('moment');
 var util = require('util');
 var fs = require('fs');
 var ugli = require('uglify-js');
-
 var tpl = function(name) {
     return util.format('dst!views/%s.dust', name);
 };
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
-        req.header('Cache-Control', 'max-age=7200');
+        res.setHeader('Cache-Control', 'max-age=7200');
         next();
     });
     
     var files = [
-        {type: 'script', path: __dirname + '/static/js/require.js'},
+        {type: 'script', path: __dirname + '/static/js/require.js'}
     ];
     
     var require = '';
