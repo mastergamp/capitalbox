@@ -3,6 +3,9 @@
 <head>
     <title>{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+		var _apiToken = '{token}';        
+    </script>
 	<include></include>
 </head>
 <body>
@@ -11,7 +14,6 @@
 <script>
     require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($) {
         $(function() {
-			var _apiToken = '{token}';
             cliRedirect("/"+_apiToken+"/main/api");
         });
     }, function(err) {
