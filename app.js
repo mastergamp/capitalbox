@@ -20,6 +20,11 @@ dust._.optimizers.format = function (ctx, node) {
     return node
 };
 
+app.use(function(req, res, next) {
+    res.setHeader('Cache-Control', 'max-age=7200000');
+    next();
+});
+
 app.use(compression());
 app.use(mollify({
     dir: staticPath

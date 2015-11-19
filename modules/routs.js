@@ -14,11 +14,6 @@ var tpl = function(name) {
 };
 
 module.exports = function(app) {
-    app.use(function(req, res, next) {
-        res.setHeader('Cache-Control', 'max-age=72000');
-        next();
-    });
-    
     var files = [
         {type: 'script', path: __dirname + '/static/js/require.js'}
     ];
