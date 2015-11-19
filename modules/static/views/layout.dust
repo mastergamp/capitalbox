@@ -4,6 +4,7 @@
     <title>{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<include></include>
+	<link rel="stylesheet" href="../css/bootstrap.css">
     <script>
 		var appError; var Uniq; var appInfo; var cliRedirect; var _apiToken = '{token}';
 
@@ -38,10 +39,7 @@
 					deps: ['jquery']
 				},
 				bootstrap: {
-					deps: ['jquery'],
-					init: function() {
-						loadCss('../css/bootstrap.css');
-					}
+					deps: ['jquery']
 				},
 				datepicker: {
 					deps: ['bootstrap'],

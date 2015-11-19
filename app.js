@@ -10,7 +10,7 @@ var ctx = require('ctx');
 var api = require('api');
 var mollify = require("mollify");
 var staticPath = __dirname + '/modules/static/';
-
+var compression = require('compression');
 
 app.engine('dust', dust.engine({
     useHelpers: true
@@ -20,6 +20,7 @@ dust._.optimizers.format = function (ctx, node) {
     return node
 };
 
+app.use(compression());
 app.use(mollify({
     dir: staticPath
 }));

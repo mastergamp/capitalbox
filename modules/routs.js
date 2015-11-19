@@ -15,7 +15,7 @@ var tpl = function(name) {
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
-        res.setHeader('Cache-Control', 'max-age=7200');
+        res.setHeader('Cache-Control', 'max-age=72000');
         next();
     });
     
