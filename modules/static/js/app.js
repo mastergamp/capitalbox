@@ -36,7 +36,7 @@ require.config({
 			}
 		},
 		datepicker: {
-			deps: ['bootstrap', 'css!../css/bootstrap-datepicker.css'],
+			deps: ['bootstrap'],
 			init: function() {
 				loadCss('../css/bootstrap-datepicker.css');
 			}
