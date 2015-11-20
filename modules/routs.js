@@ -15,10 +15,11 @@ var tpl = function(name) {
 
 module.exports = function(app) {
     var files = [
-        {type: 'script', path: __dirname + '/static/js/require.js'}
+        {type: 'script', path: __dirname + '/static/js/require.js'},
+        {type: 'script', path: __dirname + '/static/js/app.js'}
     ];
     
-    var require = '';
+    var scripts = '';
     
     _.each(files, function(file) {
         var str;
@@ -33,12 +34,12 @@ module.exports = function(app) {
             str = util.format('%s%s%s', '<style>', str, '</style>');
         }
             
-        require += str;
+        scripts += str;
     });
     
     app.get('/', function(req, res, next) {
         res.render('layout', {token: req.session.apiToken || 'fakeUser'}, safe.sure(next, function(html) {
-            html = html.replace(/<include><\/include>/, require);
+            html = html.replace(/<include><\/include>/, scripts);
             res.send(html);
         }));
     });
