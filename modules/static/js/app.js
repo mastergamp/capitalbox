@@ -23,10 +23,16 @@ require.config({
 			deps: ['jquery']
 		},
 		bootstrap: {
-			deps: ['jquery', 'css!../css/bootstrap']
+			deps: ['jquery', 'css!../css/bootstrap'],
+			init: function() {
+				require(['css'])
+			}
 		},
 		datepicker: {
-			deps: ['bootstrap', 'css!../css/bootstrap-datepicker.css']
+			deps: ['bootstrap', 'css!../css/bootstrap-datepicker.css'],
+			init: function() {
+				require(['css'])
+			}
 		},
 		'jquery-block': {
 			deps: ['jquery']
