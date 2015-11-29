@@ -131,19 +131,25 @@ module.exports = function(app) {
             finance = _.groupBy(finance, function(f) { return moment.utc(f._dt).format("YYYY MMM")});
             finance = _.map(finance, function(v, k) {
                 var value = _.reduce(v, function(memo, i) {
-                    if (i._s_type == 'd')
+                    if (i._s_type == 'd') {
+                        memo.total += i._i_val;
                         memo.debet += i._i_val;
-                    else
+                    }
+                    else {
+                        memo.total -= i._i_val;
                         memo.credit += i._i_val;
+                    }
                     return memo;
-                }, {credit: 0, debet: 0});
-               return {date: k, debet: value.debet, credit: value.credit};
+                }, {credit: 0, debet: 0, total: 0});
+                
+               return {date: k, debet: value.debet, credit: value.credit, total: value.total};
             });
             res.send({
                 title: 'Charts',
                 tpls: [tpl('charts'), tpl('header')],
                 debet: _.pluck(finance, 'debet'),
                 credit: _.pluck(finance, 'credit'),
+                total: _.pluck(finance, 'total'),
                 date: _.pluck(finance, 'date')
             });
         }));
