@@ -87,7 +87,7 @@ module.exports = function(app) {
             var filter = req.query;
             var defFormat = 'DD-MM-YYYY';
 
-            filter.from = filter.from ? filter.from : moment().subtract(7,'days').format(defFormat);
+            filter.from = filter.from ? filter.from : moment().subtract(30,'days').format(defFormat);
             filter.to = filter.to ? filter.to : moment().add(1, 'days').format(defFormat);
 
             var where = {

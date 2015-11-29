@@ -30,10 +30,7 @@ require.config({
 			deps: ['jquery']
 		},
 		bootstrap: {
-			deps: ['jquery'],
-			init: function() {
-				loadCss('../css/bootstrap.css');
-			}
+			deps: ['jquery']
 		},
 		datepicker: {
 			deps: ['bootstrap'],
