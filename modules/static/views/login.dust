@@ -1,15 +1,28 @@
+<style>
+	html, body {
+		width: 100%;
+		height: 100%;
+	}
+	body {
+		background: url(../img/main.jpg) center no-repeat;
+		background-size: cover;
+	}
+</style>
 <div id="{uniq}">
-    <div class="col-md-offset-4 col-md-4" style="margin-top: 40px" id="content">
-        <h4 class="text-muted"><b>Please sign in</b></h4>
-        <hr>
-        <form id="loginform">
-            <input class="form-control" type="text" name="_s_login" placeholder="login" style="margin-bottom: 5px;">
-            <input class="form-control" type="password" name="_s_password" placeholder="password"  style="margin-bottom: 5px;">
-            <div id="signin" class="btn btn-block btn-primary">Sign In</div>
-            <div class="btn btn-block btn-success" id="reg">Registration</div>
-        </form>
-
-        {>"views/breadcrumb.dust"/}
+    <div class="col-md-offset-4 col-md-4" style="margin-top: 40px;" id="content">
+		<div class="panel panel-default" style="background-color: rgba(0, 0, 0, 0.1); border: none">
+			<div class="panel-body">
+				<h4 style="color: whitesmoke"><b>Please sign in</b></h4>
+				<hr>
+				<form id="loginform">
+					<input class="form-control" type="text" name="_s_login" placeholder="login" style="margin-bottom: 5px;">
+					<input class="form-control" type="password" name="_s_password" placeholder="password"  style="margin-bottom: 5px;">
+					<div id="signin" class="btn btn-block btn-default"><b>Sign In</b></div>
+					<div class="btn btn-block btn-default" id="reg"><b>Registration</b></div>
+				</form>
+                {>"views/breadcrumb.dust"/}
+			</div>
+        </div>
     </div>
     <script>
         require(['jquery', 'lodash', 'safe','jquery-block'], function($, _, safe) {
