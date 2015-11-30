@@ -4,7 +4,7 @@
 		height: 100%;
 	}
 	 body {
-		 background: url(image/soa.jpg?resx=640&resy=480&blur=2) center no-repeat;
+		 background: url(image/soa.jpg?resx=640&resy=480&blur=1) center no-repeat;
 		 background-size: cover;
 	 }
 </style>
