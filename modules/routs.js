@@ -9,6 +9,7 @@ var moment = require('moment');
 var util = require('util');
 var fs = require('fs');
 var ugli = require('uglify-js');
+var gm = require('gm').subClass({imageMagick: true});
 var tpl = function(name) {
     return util.format('dst!views/%s.dust', name);
 };
@@ -154,11 +155,26 @@ module.exports = function(app) {
             });
         }));
     });
-
+    
     app.use(function(err, req, res, next) {
         if(err == 403);
             return res.send({title: 'Login', tpls: [tpl('login')]});
 
         next();
+    });
+    
+    app.get('/image/:name', function(req, res, next) {
+        var image = __dirname + '/static/img/' + req.params.name;
+        var query = req.query;
+        var resX = query.resx || 320;
+        var resY = query.resy || 240;
+        var cursor = gm(image).resize(resX, resY);
+        
+        if (query.blur)
+            cursor.blur(query.blur, query.blur/2);
+            
+        cursor.toBuffer('JPEG',safe.sure(next, function(buffer) {
+            res.send(buffer);
+        }))
     });
 };
