@@ -45,11 +45,11 @@ module.exports = function(app) {
         }));
     });
 
-    app.get('/:token/login/api', function(req, res, next) {
+    app.post('/:token/login/api', function(req, res, next) {
         next(403);
     });
 
-    app.get('/:token/logout/api', function(req, res, next) {
+    app.post('/:token/logout/api', function(req, res, next) {
         delete req.session.apiToken;
         next(403);
     });
@@ -79,13 +79,13 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/:token/main/api', function(req, res, cb) {
+    app.post('/:token/main/api', function(req, res, cb) {
         if (req.session.apiToken != req.params.token)
             return safe.back(cb, 403);
 
         var token = req.params.token;
         api.core.checkAccess(token, safe.sure(cb, function() {
-            var filter = req.query;
+            var filter = req.body;
             var defFormat = 'DD-MM-YYYY';
 
             filter.from = filter.from ? filter.from : moment().subtract(30,'days').format(defFormat);
@@ -123,7 +123,7 @@ module.exports = function(app) {
        }));
     });
 
-    app.get('/:token/charts/api', function(req, res, next) {
+    app.post('/:token/charts/api', function(req, res, next) {
         if (req.session.apiToken != req.params.token)
             return safe.back(next, 403);
 

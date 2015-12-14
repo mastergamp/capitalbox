@@ -67,7 +67,7 @@
                         return memo;
                     }, {});
 
-                    cliRedirect('/'+_apiToken+'/main/api?from='+data.from+'&to='+data.to);
+                    cliRedirect('main', data);
                 });
 
                 $main.on('click', '.remove', function() {
@@ -79,7 +79,7 @@
                        require(['api'], function(api) {
                            api.call('finance.removeFinance', _id, safe.sure_result(cb, function() {
                                $self.closest('tr').remove();
-                               cliRedirect('/'+_apiToken+'/main/api');
+                               cliRedirect('main');
                            }));
                        }, cb);
                     }, function(err) {

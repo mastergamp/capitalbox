@@ -61,11 +61,21 @@ Uniq = function() {
 
 require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($, safe) {
 	var $body = $('body #body');
+	var pages = {};
+	var expireDate = 1000 * 60 * 60;
 
-	cliRedirect = function(page) {
+	cliRedirect = function(page, data) {
 		var path = "/"+_apiToken+"/"+page+"/api";
+		
+		if (data) {
+			pages[page + _apiToken] = data;
+			setTimeout(function() {
+				pages[page + _apiToken] = null;
+			}, expireDate);
+		}
+		
 		$.blockUI();
-		$.get(path, function(data) {
+		$.post(path, pages[page + _apiToken] || {}, function(data) {
 			safe.run(function(cb) {
 				require(data.tpls, function(tpl) {
 					data.uniq = Uniq();
