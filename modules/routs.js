@@ -45,11 +45,11 @@ module.exports = function(app) {
         }));
     });
 
-    app.get('/login/api', function(req, res, next) {
+    app.get('/:token/login/api', function(req, res, next) {
         next(403);
     });
 
-    app.get('/logout/api', function(req, res, next) {
+    app.get('/:token/logout/api', function(req, res, next) {
         delete req.session.apiToken;
         next(403);
     });

@@ -2,7 +2,7 @@
     <nav class="navbar navbar-default navbar-static-top navbar-inverse">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#" data-href="/{token}/main/api">CapitalBox [<span class="text-info">v1.0</span>]</a>
+				<a class="navbar-brand" href="#main" onclick="cliRedirect('main')">CapitalBox [<span class="text-info">v1.0</span>]</a>
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-menu" aria-expanded="true">
 					<span class="sr-only">Toggle navigation</span>
 					<span class="icon-bar"></span>
@@ -12,19 +12,10 @@
 			</div>
 			<div class="navbar-collapse collapse out" id="header-menu" aria-expanded="true">
 				<ul class="nav navbar-nav pull-right">
-					<li><a href="#" data-href="/{token}/charts/api">Charts</a></li>
-					<li><a data-href="/logout/api" href="#">Log out</a></li>
+					<li><a href="#charts" onclick="cliRedirect('charts')">Charts</a></li>
+					<li><a href="#logout" onclick="cliRedirect('logout')">Log out</a></li>
 				</ul>
 			</div>
 		</div>
     </nav>
-    <script>
-        require(['jquery'], function($) {
-            $(function() {
-                $('#{uniq} a').on('click', function() {
-                    cliRedirect($(this).data('href'));
-                });
-            });
-        }, appError);
-    </script>
 </div>

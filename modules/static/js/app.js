@@ -62,7 +62,8 @@ Uniq = function() {
 require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($, safe) {
 	var $body = $('body #body');
 
-	cliRedirect = function(path) {
+	cliRedirect = function(page) {
+		var path = "/"+_apiToken+"/"+page+"/api";
 		$.blockUI();
 		$.get(path, function(data) {
 			safe.run(function(cb) {
@@ -84,8 +85,8 @@ require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.du
 			console.error(err);
 		});
 	};
-
-	cliRedirect("/"+_apiToken+"/main/api");
+	
+	cliRedirect('main');
 	
 	appError = function(err, ctx) {
 		if (!err)

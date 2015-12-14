@@ -5,7 +5,7 @@
         <form id="loginform">
             <input class="text-center form-control" type="text" name="_s_login" placeholder="Login" style="margin-bottom: 5px;">
             <input class="text-center form-control" type="password" name="_s_password" placeholder="Password"  style="margin-bottom: 5px;">
-            <div id="signin" class="btn btn-block btn-primary"><b>Sign In</b></div>
+            <a id="signin" href="#main" class="btn btn-block btn-primary"><b>Sign In</b></a>
             <div class="btn btn-block btn-info" id="reg"><b>Registration</b></div>
         </form>
         {>"views/breadcrumb.dust"/}
@@ -47,7 +47,7 @@
 
                                 _apiToken = user._s_token;
                                 api.call('core.checkAccess', safe.sure_result(cb, function() {
-                                    cliRedirect('/'+user._s_token+'/main/api');
+                                    cliRedirect('main');
                                 }));
                             }));
                         }, cb);

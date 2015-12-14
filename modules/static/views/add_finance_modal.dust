@@ -69,7 +69,7 @@
                         $modal.unblock();
                         if (!err) {
                             $modal.modal('hide');
-                            cliRedirect('/'+_apiToken+'/main/api')
+                            cliRedirect('main')
                         }
 
                 });
