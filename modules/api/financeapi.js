@@ -9,6 +9,42 @@ var TingoID = ctx.TingoID;
 
 var FinanceApi = function() {};
 
+FinanceApi.prototype.editNotice = function(token, notice, cb) {
+	core.checkAccess(token, safe.sure(cb, function() {
+		notice = prefixify(notice);
+		if (!notice._s_title)
+			return cb(new Error('Notice invalid Title.'));
+		
+		ctx.collection('notice', safe.sure(cb, function(notice_coll) {
+			if (notice._id)
+				return notice_coll.update({_id: notice._id}, {$set: _.omit(notice, "_id")}, cb);
+			
+            notice_coll.insert(notice, cb);
+        }));
+	}));
+};
+
+FinanceApi.prototype.removeNotice = function(token, _id, cb) {
+	_id = TingoID(_id);
+    if (!_id)
+        safe.back(cb, new Error("Invalid data _id."));
+	
+	core.checkAccess(token, safe.sure(cb, function() {
+		 ctx.collection('notice', safe.sure(cb, function(notice_coll) {
+            notice_coll.remove({_id: _id}, cb);
+        }));
+	}));
+}
+
+FinanceApi.prototype.getNotice = function(token, query, cb) {
+	query = prefixify(query);
+	core.checkAccess(token, safe.sure(cb, function() {
+		 ctx.collection('notice', safe.sure(cb, function(notice_coll) {
+            notice_coll.find(query).toArray(cb);
+        }));
+	}));
+};
+
 FinanceApi.prototype.editFinance = function(token, data, cb) {
     data = prefixify(data);
     if (!data._s_userToken || !data._i_val || !data._s_type)

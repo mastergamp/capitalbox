@@ -1,0 +1,46 @@
+<div id="{uniq}">
+    {>"views/header.dust"/}
+    <style>
+    </style>
+    <div class="container" id="content">
+		<ul>
+			{#notices}
+			<li role="button" class="editNotice" data-_id="{_id}">{_s_title}</li>
+			{/notices}
+		</ul>
+		<div class="btn btn-sm btn-primary editNotice">Add Notice</div>
+        {>"views/breadcrumb.dust"/}
+    </div>
+    <script>
+        require(['jquery', "safe", "jquery-block"], function($, safe) {
+            $(function() {
+				var $main = $("#{uniq} #content");
+				
+				$main.on("click", ".editNotice", function() {
+					var $self = $(this);
+					var _id = $self.data("_id");
+					
+					$.blockUI();
+					safe.run(function(cb) {
+						require(['dst!views/add_notice_modal.dust', "api"], function(tpl, api) {
+							safe.run(function(cb) {
+								if (!_id)
+									return cb(null, []);
+									
+								api.call("finance.getNotice", {_id: _id}, cb);	
+							}, safe.sure(cb, function(result) {
+								 tpl(_.extend({uniq: Uniq()}, result[0]), safe.sure_result(cb, function(text) {
+									var $text = $(text);
+									$text.modal();
+								}));
+							}));
+                        }, cb);
+					}, function(err) {
+						$.unblockUI();
+						appError(err);
+					})
+				})
+            });
+        }, appError);
+    </script>
+</div>

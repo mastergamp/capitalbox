@@ -155,6 +155,21 @@ module.exports = function(app) {
             });
         }));
     });
+	
+	app.post("/:token/notice/api", function(req, res, next) {
+		if (req.session.apiToken != req.params.token)
+            return safe.back(next, 403);
+		
+		var token = req.params.token;
+        
+		api.finance.getNotice(token, {_s_userToken: token}, safe.sure(next, function(notices) {
+			res.send({
+				title: 'Notise',
+				tpls: [tpl('notise'), tpl('header')],
+				notices: notices
+			});
+		}));
+	})
     
     app.use(function(err, req, res, next) {
         if(err == 403);

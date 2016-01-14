@@ -9,6 +9,7 @@ var ctx = require('ctx');
 var Error = require('./errorapi.js');
 var moment = require('moment');
 var TingoID = ctx.TingoID;
+var crypto = require("crypto");
 
 var CoreApi = function() {};
 
@@ -18,6 +19,9 @@ CoreApi.prototype.getUser = function(token, query, cb) {
     return safe.back(cb, new Error(400, 'Invalid request data'));
 
   ctx.collection('users', safe.sure(cb, function(users) {
+	if (query._s_password)
+		query._s_password = crypto.createHash("md5").update(query._s_password).digest("hex");
+	
     users.findOne(query, cb);
   }));
 };
@@ -107,8 +111,10 @@ CoreApi.prototype.prefixify = function(data) {
             {_s_token: data._s_token}
           ]
         }, safe.sure(cb, function(existsUser) {
-          if (!existsUser)
-            users.insert(data, cb);
+          if (!existsUser) {
+			data._s_password = crypto.createHash("md5").update(data._s_password).digest("hex");  
+			users.insert(data, cb);
+		  }
           else
             cb(new Error('User with this login or Identifier already exists.'));
         }));
