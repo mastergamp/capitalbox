@@ -10,7 +10,7 @@
                     <input type="hidden" name="_id" value="{_id}">
                     <!--type-->
                     <div class="form-group">
-                        <label class="col-xs-3 control-label">Type:</label>
+                        <label class="col-xs-2 control-label">Type:</label>
                         <div class="col-xs-8">
                             <select name="_s_type" class="form-control">
                                 <option value="d" {@eq key=_s_type value="d"}selected{/eq}>Debet</option>
@@ -20,14 +20,14 @@
                     </div>
                     <!--value-->
                     <div class="form-group">
-                        <label class="col-xs-3 control-label">Value:</label>
+                        <label class="col-xs-2 control-label">Value:</label>
                         <div class="col-xs-8">
                            <input type="number" name="_i_val" value="{_i_val}" class="form-control">
                         </div>
                     </div>
                     <!--Desc-->
                     <div class="form-group">
-                        <label class="col-xs-3 control-label">Desc:</label>
+                        <label class="col-xs-2 control-label">Desc:</label>
                         <div class="col-xs-8">
                             <textarea name="_s_desc" class="form-control">{_s_desc}</textarea>
                         </div>

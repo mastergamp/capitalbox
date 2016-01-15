@@ -3,12 +3,10 @@
     <style>
     </style>
     <div class="container" id="content">
-		<ul>
-			{#notices}
-			<li role="button" class="editNotice" data-_id="{_id}">{_s_title}</li>
-			{/notices}
-		</ul>
-		<div class="btn btn-sm btn-primary editNotice">Add Notice</div>
+		{#notices}
+		<div role="button" class="btn btn-default btn-block editNotice" style="margin-bottom:5px" data-_id="{_id}">{_s_title}</div>
+		{/notices}
+		<div class="btn btn-primary btn-block editNotice">Add Notice</div>
         {>"views/breadcrumb.dust"/}
     </div>
     <script>
