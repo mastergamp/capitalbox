@@ -103,12 +103,9 @@ require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.du
 			return ;
 
 		var uniq = Uniq();
-		var alert;
-
-		if (err.status)
-			alert = '<div class="alert alert-danger" id="'+uniq+'"><b>'+err.status +' :</b> '+ err.statusText+'</div>';
-		else
-			alert = '<div class="alert alert-danger" id="'+uniq+'">'+err+'</div>';
+		var error = err.status || err.code || err;
+		var errorText = err.statusText || err.path || err.syscall;
+		var alert = '<div class="alert alert-danger" id="'+uniq+'"><b>'+ error +' :</b> '+ errorText +'</div>';
 
 		setTimeout(function() {
 			$('#'+uniq).remove();

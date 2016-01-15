@@ -59,7 +59,7 @@ module.exports = function(app) {
             return safe.back(cb, new Error(400, 'Invalid request data'));
 
         var m = req.body;
-
+    
         safe.run(function(cb) {
             if (m.params[1])
                 _.get(api, m.method)(m.params[0], m.params[1], cb);
@@ -67,14 +67,16 @@ module.exports = function(app) {
                 _.get(api, m.method)(m.params[0], cb);
         }, function(err, data) {
             var rpc = {"jsonrpc":"2.0"};
-            if (err)
+            if (err) {
+                console.error(err);
                 rpc.error = err;
+            }
             else
                 rpc.result = data;
-
+    
             if (m.method == 'core.checkAccess')
                 req.session.apiToken = data;
-
+    
             res.json(rpc);
         });
     });
