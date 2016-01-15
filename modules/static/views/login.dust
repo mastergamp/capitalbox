@@ -3,8 +3,8 @@
         <h4 class="text-muted"><b>Please sign in</b></h4>
         <hr>
         <form id="loginform">
-            <input class="text-center form-control" type="text" name="_s_login" placeholder="Login" style="margin-bottom: 5px;">
-            <input class="text-center form-control" type="password" name="_s_password" placeholder="Password"  style="margin-bottom: 5px;">
+            <input class="text-center form-control" type="text" name="_s_login" placeholder="Login" style="margin-bottom: 5px;" autocomplete="off">
+            <input class="text-center form-control" type="password" name="_s_password" placeholder="Password"  style="margin-bottom: 5px;" autocomplete="off">
             <a id="signin" href="#main" class="btn btn-block btn-primary"><b>Sign In</b></a>
             <div class="btn btn-block btn-info" id="reg"><b>Registration</b></div>
         </form>
