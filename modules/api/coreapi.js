@@ -10,20 +10,56 @@ var Error = require('./errorapi.js');
 var moment = require('moment');
 var TingoID = ctx.TingoID;
 var crypto = require("crypto");
+var util = require("util");
 
 var CoreApi = function() {};
 
-CoreApi.prototype.getUser = function(token, query, cb) {
-  var self = this;
-  if (!query._s_token && !query._s_login)
-    return safe.back(cb, new Error(400, 'Invalid request data'));
+CoreApi.prototype.tpl = function(name) {
+	return util.format('dst!views/%s.dust', name);
+};
 
+CoreApi.prototype.logoutProcess = function(token, cb) {
+	var self = CoreApi;
+	
+	ctx.collection("users", safe.sure(cb, function(users_coll) {
+		users_coll.update({_s_token: token}, {$unset: {_s_token: 1}}, cb);
+	}));	
+};
+
+CoreApi.prototype.loggedinProcess = function(token, query, cb) {
+	var self = CoreApi;
+	
+	safe.parallel([
+		function(cb) {
+			ctx.collection("users", cb);
+		},
+		function(cb) {
+			self.getUser(token, query, cb);
+		}	
+	], safe.sure_spread(cb, function(users_coll, user) {
+		if (!user)
+			return cb(new Error("Password or login is incorrect"));
+
+		user._s_token = crypto.createHash("md5").update(user._s_login).update(moment().toDate().valueOf().toString()).digest("hex");
+		users_coll.update({_id: user._id}, {$set: {_s_token: user._s_token}}, safe.sure(cb, function() {
+			cb(null, user);
+		}))
+	}));
+};
+
+CoreApi.prototype.getUser = function(token, query, cb) {
   ctx.collection('users', safe.sure(cb, function(users) {
 	if (query._s_password)
 		query._s_password = crypto.createHash("md5").update(query._s_password).digest("hex");
 	
     users.findOne(query, cb);
   }));
+};
+
+CoreApi.prototype._getUser = function(token, cb) {
+	var self = CoreApi;
+	
+	self.getUser(token, {_s_token: token}, cb)
 };
 
 CoreApi.prototype.prefixify = function(data) {
@@ -83,10 +119,8 @@ CoreApi.prototype.prefixify = function(data) {
 
 (function() {
   var fields = {
-    _s_token : 1,
     _s_login : 1,
-    _s_password : 1,
-    _i_deposit : 1
+    _s_password : 1
   };
 
   CoreApi.prototype.addUser = function(token, data, cb) {
@@ -105,12 +139,7 @@ CoreApi.prototype.prefixify = function(data) {
       return safe.back(cb, new Error(m));
 
     ctx.collection('users', safe.sure(cb, function(users) {
-        users.findOne({
-          $or: [
-            {_s_login: data._s_login},
-            {_s_token: data._s_token}
-          ]
-        }, safe.sure(cb, function(existsUser) {
+        users.findOne({_s_login: data._s_login}, safe.sure(cb, function(existsUser) {
           if (!existsUser) {
 			data._s_password = crypto.createHash("md5").update(data._s_password).digest("hex");  
 			users.insert(data, cb);
@@ -125,7 +154,7 @@ CoreApi.prototype.prefixify = function(data) {
 CoreApi.prototype.checkAccess = function(token, cb) {
   var self = CoreApi;
   if (!token)
-    return safe.back(cb, new Error(400, 'Invalid request data'));
+    return safe.back(cb, new Error(400, 'Invalid token'));
 
   self.getUser('fakeUser', {_s_token: token}, safe.sure(cb, function(user) {
     if (!user)

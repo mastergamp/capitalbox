@@ -69,7 +69,6 @@
                     }, {});
 
                     data._dt = moment().toDate();
-                    data._s_userToken = _apiToken;
 
                     safe.run(function(cb) {
                         require(['api'], function(api) {

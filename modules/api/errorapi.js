@@ -4,6 +4,7 @@
 var CustomError = function(status, text) {
     this.status = status || 404;
     this.statusText = text || 'Custom Error';
+    this.custom = 1;
 };
 
 CustomError.prototype = Object.create(Error.prototype);

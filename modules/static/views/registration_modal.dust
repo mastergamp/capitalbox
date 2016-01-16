@@ -28,20 +28,6 @@
                             <input type="password" name="_t_password" class="form-control">
                         </div>
                     </div>
-                    <!--ID-->
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label">Identity:</label>
-                        <div class="col-xs-8">
-                            <input type="text" name="_s_token" class="form-control">
-                        </div>
-                    </div>
-                    <!--Deposit-->
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label">Deposit:</label>
-                        <div class="col-xs-8">
-                            <input type="number" name="_i_deposit" class="form-control">
-                        </div>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer">

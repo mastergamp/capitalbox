@@ -41,14 +41,9 @@
                     $.blockUI();
                     return safe.run(function(cb) {
                         require(['api'], function(api){
-                            api.call('core.getUser', data, safe.sure(cb, function(user) {
-                                if (!user)
-                                    return cb({status: 400, statusText: 'Login or Password incorrect.'});
-
+                            api.call('core.loggedinProcess', data, safe.sure_result(cb, function(user) {
                                 _apiToken = user._s_token;
-                                api.call('core.checkAccess', safe.sure_result(cb, function() {
-                                    cliRedirect('main');
-                                }));
+                                cliRedirect('main');
                             }));
                         }, cb);
                     }, function(err) {
