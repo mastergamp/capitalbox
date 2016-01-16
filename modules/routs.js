@@ -8,41 +8,14 @@ var Error = api.Error;
 var moment = require('moment');
 var util = require('util');
 var fs = require('fs');
-var ugli = require('uglify-js');
 var gm = require('gm').subClass({imageMagick: true});
 var tpl = function(name) {
     return util.format('dst!views/%s.dust', name);
 };
 
 module.exports = function(app) {
-    var files = [
-        {type: 'script', path: __dirname + '/static/js/require.js'},
-        {type: 'script', path: __dirname + '/static/js/app.js'}
-    ];
-    
-    var scripts = '';
-    
-    _.each(files, function(file) {
-        var str;
-        
-        if (file.type == 'script') {
-            str = ugli.minify(file.path).code;
-            str = util.format('%s%s%s', '<script>', str, '</script>');
-        }
-            
-        if (file.type == 'css') {
-            str = fs.readFileSync(file.path);
-            str = util.format('%s%s%s', '<style>', str, '</style>');
-        }
-            
-        scripts += str;
-    });
-    
     app.get('/', function(req, res, next) {
-        res.render('layout', {token: req.session.apiToken || 'fakeUser'}, safe.sure(next, function(html) {
-            html = html.replace(/<include><\/include>/, scripts);
-            res.send(html);
-        }));
+        res.render('layout', {token: req.session.apiToken || 'fakeUser'});
     });
 
     app.post('/:token/login/api', function(req, res, next) {

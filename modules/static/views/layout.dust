@@ -6,7 +6,8 @@
     <script>
 	var _apiToken = '{token}';
     </script>
-    <include></include>
+	<script src="../js/require.js"></script>
+    <script src="../js/app.js"></script>
     <link rel="stylesheet" href="../css/bootstrap.css">
 </head>
 <body>
