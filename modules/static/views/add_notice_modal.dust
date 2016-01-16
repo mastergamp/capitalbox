@@ -39,7 +39,7 @@
                 var $modal = $('#{uniq}'), $form = $modal.find('form');
                 var modalHeader = '#{uniq} .modal-dialog';
 
-                $modal.on('hidden', function() {
+                $modal.on('hidden.bs.modal', function() {
                     $modal.remove();
                 });
 				

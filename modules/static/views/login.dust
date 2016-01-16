@@ -20,7 +20,7 @@
                     var $self = $(this);
                     $.blockUI();
                     safe.run(function(cb) {
-                        require(['dst!views/registration.dust'], function(tpl) {
+                        require(['dst!views/registration_modal.dust'], function(tpl) {
                             tpl({uniq: Uniq()}, safe.sure_result(cb, function(text) {
                                 var $text = $(text);
                                 $text.modal();
