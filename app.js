@@ -14,6 +14,7 @@ var compression = require('compression');
 var _ = require("lodash");
 var path = require("path");
 var gm = require('gm').subClass({imageMagick: true});
+var fs = require("fs");
 
 app.engine('dust', dust.engine({
     useHelpers: true
@@ -125,9 +126,11 @@ app.get('/image/:name', function(req, res, next) {
 	if (query.blur)
 		cursor.blur(query.blur, query.blur/2);
 
-	cursor.toBuffer('JPEG',safe.sure(next, function(buffer) {
+	//cursor.toBuffer('JPEG',safe.sure(next, function(buffer) {
+	fs.readFile(image, safe.sure(next, function(buffer) {
 		res.send(buffer);
-	}))
+	}));
+	//}))
 });
 
 console.log('Run server on port: '+port);
