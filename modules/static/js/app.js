@@ -55,11 +55,13 @@ require.config({
 	}
 });
 
-Uniq = function() {
-	return Math.random().toString().split('.').join('X');
-};
 
-require(['jquery', 'safe', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($, safe) {
+
+require(['jquery', 'safe', 'lodash', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($, safe, _) {
+	Uniq = function() {
+		return _.random(1000000000, 9999999999);
+	};
+	
 	var $body = $('body #body');
 	var pages = {};
 	var expireDate = 1000 * 60 * 60;
