@@ -10,13 +10,13 @@
 					<span class="icon-bar"></span>
 				</button>
 			</div>
-			<div class="navbar-collapse collapse out" id="header-menu" aria-expanded="true">
-				<ul class="nav navbar-nav pull-right">
-					<li><a href="#charts" onclick="cliRedirect('charts')">Charts</a></li>
-					<li><a href="#notice" onclick="cliRedirect('notice')">Notice</a></li>
-					<li><a href="#logout" onclick="cliRedirect('logout')">Log out</a></li>
-				</ul>
-			</div>
+            <div class="navbar-collapse collapse out" id="header-menu" aria-expanded="true">
+                <ul class="nav navbar-nav pull-right">
+                    <li><a href="#charts" onclick="cliRedirect('charts')">Charts</a></li>
+                    <li><a href="#notice" onclick="cliRedirect('notice')">Notice</a></li>
+                    <li><a href="#logout" onclick="cliRedirect('logout')">Log out</a></li>
+                </ul>
+            </div>
 		</div>
     </nav>
 </div>

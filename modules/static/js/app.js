@@ -57,7 +57,7 @@ require.config({
 
 
 
-require(['jquery', 'safe', 'lodash', 'jquery-block', 'bootstrap', 'dst!views/breadcrumb.dust'], function($, safe, _) {
+require(['jquery', 'safe', 'lodash', 'jquery-block', 'bootstrap'], function($, safe, _) {
 	Uniq = function() {
 		return _.random(1000000000, 9999999999);
 	};

@@ -1,7 +1,6 @@
 <div id="{uniq}">
-{>"views/header.dust"/}
     <!--Body-->
-    <div class="container" id="content">
+    <div id="content">
 		<!--Search-->
 		<form class="form-inline" id="formsearch">
 			<div class="form-group-sm form-group">
@@ -45,7 +44,6 @@
 				</tbody>
 			</table>
 		</div>
-		{>"views/breadcrumb.dust"/}
 	</div>	
     <script>
         require(['jquery', 'safe', 'lodash', 'datepicker'], function($, safe, _) {

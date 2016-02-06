@@ -40,7 +40,7 @@ module.exports = function(app) {
 			], safe.sure_spread(cb, function (finance, total, available) {
 				res.send({
 					title: 'CapitalBox',
-					tpls: [api.core.tpl('main'), api.core.tpl('header'), api.core.tpl('finance_table_item')],
+					tpls: [api.core.tpl('main'), api.core.tpl('finance_table_item')],
 					total: _.round(total),
 					finance: finance,
 					filter: filter,
@@ -74,7 +74,7 @@ module.exports = function(app) {
 				});
 				res.send({
 					title: 'Charts',
-					tpls: [api.core.tpl('charts'), api.core.tpl('header')],
+					tpls: [api.core.tpl('charts')],
 					debet: _.pluck(finance, 'debet'),
 					credit: _.pluck(finance, 'credit'),
 					total: _.pluck(finance, 'total'),
@@ -91,7 +91,7 @@ module.exports = function(app) {
 			api.finance.getNotice(token, {_iduser: user._id}, safe.sure(next, function(notices) {
 				res.send({
 					title: 'Notise',
-					tpls: [api.core.tpl('notise'), api.core.tpl('header')],
+					tpls: [api.core.tpl('notise')],
 					notices: notices
 				});
 			}));

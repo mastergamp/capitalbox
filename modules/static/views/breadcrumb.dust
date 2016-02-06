@@ -1,8 +1,7 @@
-<hr>
-<div class="breadcrumb">
-    <div class="row">
-        <span class="text-muted pull-right">Created by Ivan Vityaev ®&nbsp</span>
-    </div>
+<div class="container">
+	<hr>
+	<div class="breadcrumb">
+		<div class="text-muted">Created by Ivan Vityaev ®&nbsp</div>
+	</div>
 </div>
-
 

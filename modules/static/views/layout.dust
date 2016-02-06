@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="../css/bootstrap.css">
 </head>
 <body>
-    <div id="body"></div>
+    {>"header"/}
+    <div class="container" id="body"></div>
+    {>"breadcrumb"/}  
 </body>
 </html>
