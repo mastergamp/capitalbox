@@ -1,5 +1,5 @@
 <div style="margin-bottom: 5px;" id="{uniq}">
-    <nav class="navbar navbar-default navbar-static-top navbar-inverse">
+    <nav class="navbar navbar-default navbar-static-top">
 		<div class="container">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#main" onclick="cliRedirect('main')">CapitalBox [<span class="text-info">v1.0</span>]</a>
