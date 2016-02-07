@@ -12,7 +12,7 @@
 </head>
 <body>
     {>"header"/}
-    <div class="container" id="body"></div>
+	<div class="container" id="body"></div>
     {>"breadcrumb"/}  
 </body>
 </html>

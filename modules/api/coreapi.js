@@ -59,7 +59,12 @@ CoreApi.prototype.getUser = function(token, query, cb) {
 CoreApi.prototype._getUser = function(token, cb) {
 	var self = CoreApi;
 	
-	self.getUser(token, {_s_token: token}, cb)
+	self.getUser(token, {_s_token: token}, safe.sure(cb, function(user) {
+		if (!user)
+			return cb(403);
+			
+		cb(null, user);	
+	}))
 };
 
 CoreApi.prototype.prefixify = function(data) {
