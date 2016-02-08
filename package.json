@@ -17,6 +17,9 @@
     "require-css": "^0.1.8",
     "safe": "^0.3.5",
     "tingodb": "^0.4.2",
-    "uglify-js": "^2.6.1"
+    "uglify-js": "^2.6.1",
+    "scripts": {
+      "start": "node app.js"
+    }  
   }
 }
