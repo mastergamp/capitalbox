@@ -5,3 +5,5 @@ npm-debug.log
 modules/db
 capitalbox
 capitalbox.pub
+google.conf
+google.auth
