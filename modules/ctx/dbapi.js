@@ -1,8 +1,9 @@
 var engine = require('tingodb')({nativeObjectID: true});
 var Db = engine.Db,
+	config = require("config");
     safe = require('safe');
 
-var db = new Db(__dirname + '/../db', {nativeObjectID: true});
+var db = new Db(config.db.path, {nativeObjectID: true});
 
 var DbApi = function() {};
 
