@@ -6,3 +6,4 @@ modules/db
 capitalbox
 capitalbox.pub
 google.auth
+google.conf
