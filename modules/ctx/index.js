@@ -3,4 +3,4 @@
  */
 "use strict";
 
-module.exports = new (require('./dbapi.js'));
+module.exports = require('./dbapi.js');

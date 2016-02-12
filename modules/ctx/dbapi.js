@@ -5,15 +5,10 @@ var Db = engine.Db,
 
 var db = new Db(config.db.path, {nativeObjectID: true});
 
-var DbApi = function() {};
-
-DbApi.prototype.collection = function(collection, cb) {
-    var collection = db.collection(collection);
-    safe.back(cb, null, collection);
+module.exports.collection = function(collection, cb) {
+    safe.back(cb, null,  db.collection(collection));
 };
 
-DbApi.prototype.TingoID = function(_id) {
+module.exports.TingoID = function(_id) {
     return engine.ObjectID(_id)
 };
-
-module.exports = DbApi;

@@ -5,32 +5,115 @@ var util = require("google-drive-util");
 var request = require("request");
 var oauth = util.readTokenSync();
 var google = require('googleapis');
-var drive = google.drive({ version: 'v2', auth: oauth });
+var drive2 = google.drive({ version: 'v2', auth: oauth });
 var colors = require("colors");
+var path = require("path");
+var _ = require("lodash");
+var cacheFileLists = [];
 
-module.exports.syncDB = function(token, cb) {
-	fs.readdir(cfg.db.path, function(err, data) {
-		if (!err && data.length)
-			return cb();
+var queue = safe.queue(safe.trap(function(data, cb) {
+	var fn = function () {
+		data.worker();
+		setTimeout(cb, data.delay);
+	};
+	fn.apply(this,arguments);
+}), 1);
 
-		fs.mkdir(cfg.db.path, safe.sure(cb, function() {
-			drive.children.list({folderId: cfg.google.DBFolder}, safe.sure(cb, function(data) {
-				safe.each(data.items, function(item, cb) {
-					drive.files.get({fileId: item.id}, safe.sure(cb, function(item) {
-						var dest = fs.createWriteStream(cfg.db.path +"/"+ item.title);
-						drive.files.get({fileId: item.id, alt: "media"})
-							.on('end', function() {
-								console.info("Complete dowloading collection: ".blue+item.title.yellow);
-							})
-							.on('error', function(err) {
-								console.error(err)
-							})
-							.pipe(dest);
+var eventWriteStream = function (token, dbname) {
+	queue.push({
+		worker:function () {
+			safe.run(function(cb) {
+				getDriveFileLists(token, function(cb) {
+					return function(item) {
+						if (item.title != dbname)
+							return cb();
 
-						safe.back(cb);
-					}))
+						var path_ = path.join(cfg.db.path, dbname);
+						fs.readFile(path_, safe.sure(cb, function(file) {
+							drive2.files.update({
+								fileId: item.id,
+								media: {
+									mimeType: "text/plain",
+									body: file
+								}
+							}, cb)
+						}));
+					}
 				}, cb);
-			}));
-		}));
+			}, function(err) {
+				if (err)
+					return console.error(err);
+
+				console.log("Success upload file: ".blue + dbname.yellow);
+			});
+		},
+		delay: 1000
 	});
 };
+
+var callback = function(token, dbname, cb) {
+	return safe.sure(cb, function(result) {
+		eventWriteStream(token, dbname);
+		cb(null, result);
+	})
+};
+
+var getDriveFileLists = function(token, fn, cb) {
+	safe.run(function(cb) {
+		if (cacheFileLists.length)
+			return cb(null, cacheFileLists);
+
+		drive2.children.list({folderId: cfg.google.DBFolder}, cb);
+	}, safe.sure(cb, function(dataDrive) {
+		safe.each(dataDrive.items, function (item, cb) {
+			drive2.files.get({fileId: item.id, fields: "title,id"}, safe.sure(cb, fn(cb)));
+		}, cb);
+	}));
+};
+
+var syncDB = function(token) {
+	safe.auto({
+		readdir: function (cb) {
+			fs.readdir(cfg.db.path, function (err, dataCurr) {
+				cb(null, dataCurr || [])
+			});
+		},
+		mkdir: function (cb) {
+			fs.mkdir(cfg.db.path, function () {
+				cb(null);
+			});
+		},
+		driveDownload: ["readdir", function (cb, result) {
+			getDriveFileLists(token, function(cb) {
+				return function(item) {
+					if (_.contains(result.readdir, item.title))
+						return safe.back(cb);
+
+					var dest = fs.createWriteStream(cfg.db.path + "/" + item.title);
+					drive2.files.get({fileId: item.id, alt: "media"})
+						.on('end', function () {
+							console.info("Complete downloading collection: ".blue + item.title.yellow);
+						})
+						.on('error', function (err) {
+							console.error(err)
+						})
+						.pipe(dest);
+
+					safe.back(cb);
+				}
+			}, cb);
+		}]
+	}, function(err) {
+		if (err)
+			console.error(err)
+	});
+};
+
+var updateDB = function(token, dbname) {
+	eventWriteStream(token, dbname);
+};
+
+module.exports.eventWriteStream = eventWriteStream;
+module.exports.updateDB = updateDB;
+module.exports.syncDB = syncDB;
+module.exports.callback = callback;
