@@ -13,41 +13,39 @@ var cacheFileLists = [];
 
 var queue = safe.queue(safe.trap(function(data, cb) {
 	var fn = function () {
-		data.worker();
-		setTimeout(cb, data.delay);
+		data.worker(cb);
 	};
 	fn.apply(this,arguments);
 }), 1);
 
 var eventWriteStream = function (token, dbname) {
 	queue.push({
-		worker:function () {
-			safe.run(function(cb) {
-				getDriveFileLists(token, function(cb) {
-					return function(item) {
-						if (item.title != dbname)
-							return cb();
+		worker:function (cb) {
+			getDriveFileLists(token, function(cb) {
+				return function(item) {
+					if (item.title != dbname)
+						return cb();
 
-						var path_ = path.join(cfg.db.path, dbname);
-						fs.readFile(path_, safe.sure(cb, function(file) {
-							drive2.files.update({
-								fileId: item.id,
-								media: {
-									mimeType: "text/plain",
-									body: file
-								}
-							}, cb)
-						}));
-					}
-				}, cb);
+					var path_ = path.join(cfg.db.path, dbname);
+					fs.readFile(path_, safe.sure(cb, function(file) {
+						drive2.files.update({
+							fileId: item.id,
+							media: {
+								mimeType: "text/plain",
+								body: file
+							}
+						}, cb)
+					}));
+				}
 			}, function(err) {
+				cb();
+				
 				if (err)
 					return console.error(err);
-
+	
 				console.log("Success upload file: ".blue + dbname.yellow);
 			});
-		},
-		delay: 1000
+		}
 	});
 };
 
