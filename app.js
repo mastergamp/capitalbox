@@ -50,6 +50,8 @@ app.use(session({
 }));
 
 app.get('/', function (req, res, next) {
+	res.set("Cache-Control", "max-age=56000");
+	res.set("Content-Encoding", "gzip");
 	res.render('layout', {token: req.session.apiToken || 'fakeUser'});
 });
 

@@ -13,7 +13,9 @@
 </head>
 <body>
     {>"header"/}
-	<div class="container" id="body"></div>
+	<div class="container" id="body">
+		Please wait. Loading async modules...
+    </div>
     {>"breadcrumb"/}  
 </body>
 <script>
