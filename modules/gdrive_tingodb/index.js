@@ -2,11 +2,9 @@ var cfg = require("config");
 var fs = require("fs");
 var safe = require("safe");
 var util = require("google-drive-util");
-var request = require("request");
 var oauth = util.readTokenSync();
 var google = require('googleapis');
 var drive2 = google.drive({ version: 'v2', auth: oauth });
-var colors = require("colors");
 var path = require("path");
 var _ = require("lodash");
 var cacheFileLists = [];
@@ -19,6 +17,9 @@ var queue = safe.queue(safe.trap(function(data, cb) {
 }), 1);
 
 var eventWriteStream = function (token, dbname) {
+	if (!cfg.gdrive.enabled)
+		return ;
+	
 	queue.push({
 		worker:function (cb) {
 			getDriveFileLists(token, function(cb) {
@@ -70,6 +71,9 @@ var getDriveFileLists = function(token, fn, cb) {
 };
 
 var syncDB = function(token) {
+	if (!cfg.gdrive.enabled)
+		return ;
+		
 	safe.auto({
 		readdir: function (cb) {
 			fs.readdir(cfg.db.path, function (err, dataCurr) {
