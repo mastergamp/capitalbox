@@ -17,6 +17,7 @@ var gm = require('gm').subClass({imageMagick: true});
 var fs = require("fs");
 var gdrive = require("gdrive_tingodb");
 var colors = require("colors");
+var compression = require('compression')
 
 gdrive.syncDB("fake");
 
@@ -28,6 +29,7 @@ dust._.optimizers.format = function (ctx, node) {
 	return node
 };
 
+app.use(compression());
 app.use(mollify({
 	dir: staticPath
 }));
@@ -51,7 +53,6 @@ app.use(session({
 
 app.get('/', function (req, res, next) {
 	res.set("Cache-Control", "max-age=56000");
-	res.set("Content-Encoding", "gzip");
 	res.render('layout', {token: req.session.apiToken || 'fakeUser'});
 });
 
