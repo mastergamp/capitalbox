@@ -3,11 +3,6 @@
 <head>
     <title>{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-	var _apiToken = '{token}';
-    </script>
-	<script src="../js/require.js"></script>
-    <script src="../js/app.js"></script>
     <link rel="stylesheet" href="../css/bootstrap.css">
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
 </head>
@@ -16,91 +11,96 @@
 	<div class="container" id="body">
 		Please wait. Loading async modules...
     </div>
-    {>"breadcrumb"/}  
-</body>
-<script>
-	require(['jquery', 'jquery-block'], function($) {
-        window.Uniq = function() {
-            return Math.random().toString().substr(2, 16);
-        };
-
-        var $body = $('body #body');
-        var pages = {};
-        var expireDate = 1000 * 60 * 60;
-
-        window.cliRedirect = function(page, data) {
-            var path = "/"+_apiToken+"/"+page+"/api";
-
-            if (data) {
-                pages[page + _apiToken] = data;
-                setTimeout(function() {
-                    pages[page + _apiToken] = null;
-                }, expireDate);
-            }
-            
-            $.blockUI();
-            $.post(path, pages[page + _apiToken] || {}, function(data) {
-                (function(cb) {
-                    require(data.tpls, function(tpl) {
-                        data.token = _apiToken;
-                        tpl(data, function(err, text) {
-                            if (err)
-                                return cb(err);
-                                
-                            var $text = $(text);
-                            $body.empty().append($text);
-                            cb();
-                        });
-                    },cb);
-                })(function(err) {
+    {>"breadcrumb"/}
+    <script>
+        var _apiToken = '{token}';
+    </script>
+    <script src="../js/require.js"></script>
+    <script src="../js/app.js"></script>
+    <script>
+        require(['jquery', 'jquery-block'], function($) {
+            window.Uniq = function() {
+                return Math.random().toString().substr(2, 16);
+            };
+    
+            var $body = $('body #body');
+            var pages = {};
+            var expireDate = 1000 * 60 * 60;
+    
+            window.cliRedirect = function(page, data) {
+                var path = "/"+_apiToken+"/"+page+"/api";
+    
+                if (data) {
+                    pages[page + _apiToken] = data;
+                    setTimeout(function() {
+                        pages[page + _apiToken] = null;
+                    }, expireDate);
+                }
+    
+                $.blockUI();
+                $.post(path, pages[page + _apiToken] || {}, function(data) {
+                    (function(cb) {
+                        require(data.tpls, function(tpl) {
+                            data.token = _apiToken;
+                            tpl(data, function(err, text) {
+                                if (err)
+                                    return cb(err);
+    
+                                var $text = $(text);
+                                $body.empty().append($text);
+                                cb();
+                            });
+                        },cb);
+                    })(function(err) {
+                        $.unblockUI();
+                        if (err)
+                            console.error(err);
+                    });
+                }).fail(function(err) {
                     $.unblockUI();
-                    if (err)
-                        console.error(err);
+                    console.error(err);
                 });
-            }).fail(function(err) {
-                $.unblockUI();
-                console.error(err);
+            };
+    
+            window.appError = function(err, ctx) {
+                if (!err)
+                    return ;
+    
+                var uniq = Uniq();
+                var error = err.status || err.code || err;
+                var errorText = err.statusText || err.path || err.syscall;
+                var alert = '<div class="alert alert-danger" id="'+uniq+'"><b>'+ error +' :</b> '+ errorText +'</div>';
+    
+                setTimeout(function() {
+                    $('#'+uniq).remove();
+                }, 20000);
+    
+                if (ctx)
+                    return  $(ctx + ' *').first().before(alert);
+    
+                $('#content *').first().before(alert);
+            };
+    
+            window.appInfo = function(m, ctx) {
+                var uniq = Uniq();
+                var alert = '<div class="alert alert-info" id="'+uniq+'">'+m+'</div>';
+    
+                setTimeout(function() {
+                    $('#'+uniq).remove();
+                }, 20000);
+    
+                if (ctx)
+                    return  $(ctx + ' *').first().before(alert);
+    
+                $('#content *').first().before(alert);
+            };
+    
+            cliRedirect('main');
+    
+            $(function() {
+                require(["bootstrap"]);
             });
-        };
-        
-        window.appError = function(err, ctx) {
-            if (!err)
-                return ;
-
-            var uniq = Uniq();
-            var error = err.status || err.code || err;
-            var errorText = err.statusText || err.path || err.syscall;
-            var alert = '<div class="alert alert-danger" id="'+uniq+'"><b>'+ error +' :</b> '+ errorText +'</div>';
-
-            setTimeout(function() {
-                $('#'+uniq).remove();
-            }, 20000);
-
-            if (ctx)
-                return  $(ctx + ' *').first().before(alert);
-
-            $('#content *').first().before(alert);
-        };
-
-        window.appInfo = function(m, ctx) {
-            var uniq = Uniq();
-            var alert = '<div class="alert alert-info" id="'+uniq+'">'+m+'</div>';
-
-            setTimeout(function() {
-                $('#'+uniq).remove();
-            }, 20000);
-
-            if (ctx)
-                return  $(ctx + ' *').first().before(alert);
-
-            $('#content *').first().before(alert);
-        };
-
-        cliRedirect('main');
-        
-        $(function() {
-            require(["bootstrap"]);
-        });
-    })
-</script>
+        })
+    </script>
+</body>
 </html>

@@ -17,7 +17,7 @@ var gm = require('gm').subClass({imageMagick: true});
 var fs = require("fs");
 var gdrive = require("gdrive_tingodb");
 var colors = require("colors");
-var compression = require('compression')
+var compression = require('compression');
 
 gdrive.syncDB("fake");
 
