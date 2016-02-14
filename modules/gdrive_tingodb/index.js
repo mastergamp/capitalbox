@@ -115,6 +115,8 @@ var updateDB = function(token, dbname) {
 	eventWriteStream(token, dbname);
 };
 
+setInterval(syncDB, 1000 * 60 * 10);
+
 module.exports.eventWriteStream = eventWriteStream;
 module.exports.updateDB = updateDB;
 module.exports.syncDB = syncDB;
