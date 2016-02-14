@@ -24,6 +24,7 @@ define(['text'], function(text) {
             } else {
                 compileFn(data, moduleName);
                 load(function(context, callback) {
+                	context.uniq = Math.random().toString().substr(2, 16);
                     return dust.render(moduleName, context, callback);
                 });
             }

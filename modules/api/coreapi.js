@@ -138,7 +138,7 @@ module.exports.prefixify = prefixify;
 var addUser = function(token, data, cb) {
 	var m = null;
 	
-	data = self.prefixify(data);
+	data = prefixify(data);
 	
 	_.each(fields, function(v, k) {
 	  if (!data[k]) {

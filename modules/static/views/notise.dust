@@ -1,14 +1,15 @@
 <div id="{uniq}">
-    <div id="content">
-		{#notices}
-		<div role="button" class="btn btn-default btn-block editNotice" style="margin-bottom:5px" data-_id="{_id}">{_s_title}</div>
-		{/notices}
-		<div class="btn btn-primary btn-block editNotice">Add Notice</div>
+    <div class="col-md-6 col-xs-12">
+        {#notices}
+		<div role="button" class="btn btn-default btn-block editNotice" style="margin-bottom:5px;" data-_id="{_id}">{_s_title}</div>
+        {/notices}
+		<div class="btn btn-primary btn-block editNotice" style="margin-bottom:15px;" >Add Notice</div>
     </div>
+	<div class="col-md-6 col-xs-12" id="edit"></div>
     <script>
         require(['jquery', "safe", "lodash", "jquery-block"], function($, safe, _) {
             $(function() {
-				var $main = $("#{uniq} #content");
+				var $main = $("#{uniq}");
 				
 				$main.on("click", ".editNotice", function() {
 					var $self = $(this);
@@ -16,16 +17,16 @@
 					
 					$.blockUI();
 					safe.run(function(cb) {
-						require(['dst!views/add_notice_modal.dust', "api"], function(tpl, api) {
+						require(['dst!views/add_notice_edit.dust', "api"], function(tpl, api) {
 							safe.run(function(cb) {
 								if (!_id)
 									return cb(null, []);
 									
 								api.call("finance.getNotice", {_id: _id}, cb);	
 							}, safe.sure(cb, function(result) {
-								 tpl(_.extend({uniq: Uniq()}, result[0]), safe.sure_result(cb, function(text) {
+								 tpl(result[0] || {}, safe.sure_result(cb, function(text) {
 									var $text = $(text);
-									$text.modal();
+									$main.find("#edit").empty().append($text);
 								}));
 							}));
                         }, cb);

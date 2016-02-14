@@ -43,13 +43,8 @@ require.config({
 		jsonrpc: {
 			deps: ['jquery']
 		},
-		dust: {
-			init: function() {
-				require(['dust-helpers']);
-			}
-		},
 		dst: {
-			deps: ['dust']
+			deps: ['dust', 'dust-helpers']
 		}
 	}
 });

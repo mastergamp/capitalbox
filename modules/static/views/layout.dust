@@ -21,7 +21,7 @@
 <script>
 	require(['jquery', 'jquery-block'], function($) {
         window.Uniq = function() {
-            return new Date().valueOf();
+            return Math.random().toString().substr(2, 16);
         };
 
         var $body = $('body #body');
@@ -42,7 +42,6 @@
             $.post(path, pages[page + _apiToken] || {}, function(data) {
                 (function(cb) {
                     require(data.tpls, function(tpl) {
-                        data.uniq = Uniq();
                         data.token = _apiToken;
                         tpl(data, function(err, text) {
                             if (err)

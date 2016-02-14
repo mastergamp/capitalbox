@@ -4,9 +4,9 @@
   } else if (typeof exports === 'object') {
     module.exports = factory(require('dustjs-linkedin'), require('moment'));
   } else {
-    require(["moment"], function(moment) {
-      factory(root.dust, moment);
-    });
+  	require(['moment'], function(moment) {
+  		factory(root.dust, moment);
+  	});
   }
 }(this, function(dust, moment) {
 function log(helper, msg, level) {
@@ -243,7 +243,10 @@ var helpers = {
         date = moment(context.stack.head[params.data], params.def).format(params.format);
         chunk.write(date);
       }
-      catch(err) {}
+      catch(err) {
+      	date = context.stack.head[params.data];
+		chunk.write(date);
+      }
       finally{
         return chunk;
       }

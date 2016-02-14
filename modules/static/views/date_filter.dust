@@ -1,0 +1,32 @@
+<div id="{uniq}_collapse" class="panel-collapse collapse {#filter._b_collapsed}in{/filter._b_collapsed}{^filter._b_collapsed}out{/filter._b_collapsed}" role="tabpanel" aria-labelledby="headingOne">
+    <form class="form-inline" id="{uniq}_search">
+        <div class="form-group-sm form-group">
+            <input type="text" value="{filter.from}" class="form-control from" name="from" placeholder="From"/>&nbsp
+            <input type="text" value="{filter.to}" class="form-control to" name="to" placeholder="To"/>&nbsp
+        </div>
+        <button class="btn btn-default btn-sm"><span class="glyphicon glyphicon glyphicon-search"></span> Find</button>
+    </form>
+    <hr>
+</div>
+<script>
+    require(["jquery", "lodash",'datepicker'], function($, _) {
+        $(function() {
+			var $search = $('#{uniq}_search');
+
+			$search.find('input').each(function() {
+				$(this).datepicker({format: 'dd-mm-yyyy', orientation: 'top'});
+			});
+
+			$search.on('submit', function(e) {
+				e.preventDefault();
+				var data = _.reduce($search.serializeArray(), function(memo, i) {
+					memo[i.name] = i.value;
+					return memo;
+				}, {});
+                
+                data._b_collapsed = $("{uniq}_collapse").hasClass("in");
+				cliRedirect('main', data);
+			});
+        })
+    }, appError)
+</script>

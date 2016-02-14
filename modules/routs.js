@@ -40,7 +40,7 @@ module.exports = function(app) {
 			], safe.sure_spread(cb, function (finance, total, available) {
 				res.send({
 					title: 'CapitalBox',
-					tpls: [api.core.tpl('main'), api.core.tpl('finance_table_item')],
+					tpls: [api.core.tpl('main'), api.core.tpl('finance_table_item'), api.core.tpl('date_filter')],
 					total: _.round(total),
 					finance: finance,
 					filter: filter,
