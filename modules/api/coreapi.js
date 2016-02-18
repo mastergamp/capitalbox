@@ -60,7 +60,6 @@ var minify = function(root, cb) {
 					
 					fs.readFile(file, cb);
 				}, safe.sure(cb, function(buff) {
-					console.log(file)
 					fs.writeFile(thisminpath, buff, cb);
 				}));
 			});
