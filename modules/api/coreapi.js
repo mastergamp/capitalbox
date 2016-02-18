@@ -13,12 +13,62 @@ var crypto = require("crypto");
 var util = require("util");
 var gdrive = require("gdrive_tingodb");
 var USERS = "users";
+var fs = require("fs");
+var pathNode = require('path');
+var minifyjs = require("minify");
 
 var fields = {
 	_s_login : 1,
 	_s_password : 1
 };
 
+var minify = function(root, cb) {
+	var STATIC_MIN = 'static_min';
+	var files = [];
+	
+	function readDir(path, cb) {
+		fs.readdir(path, safe.sure(cb, function(readdir) {
+			safe.each(readdir, function(file, cb) {
+				var infile = pathNode.join(path, file);
+				fs.lstat(infile, safe.sure(cb, function(lstat) {
+					safe.run(function(cb) {
+						if (lstat.isFile()) {
+							files.push(infile);
+							return cb();
+						}
+						else if (lstat.isDirectory()) {
+							return fs.mkdir(infile.replace(/static/g, STATIC_MIN), safe.sure(cb, function() {
+								readDir(infile, cb);
+							}));
+						}
+						else
+							cb();
+					}, cb)
+				}))
+			}, cb)
+		})); 
+	}
+	
+	readDir(root, safe.sure(cb, function() {
+		safe.each(files, function(file, cb) {
+			minifyjs(file, function(err, buff) {
+				var thisminpath = file.replace(/static/g, STATIC_MIN);
+				
+				safe.run(function(cb) {
+					if (!err)
+						return cb(null, buff);
+					
+					fs.readFile(file, cb);
+				}, safe.sure(cb, function(buff) {
+					console.log(file)
+					fs.writeFile(thisminpath, buff, cb);
+				}));
+			});
+		}, cb)
+	}));
+}
+
+module.exports.minify = minify;
 
 var tpl = function(name) {
 	return util.format('dst!views/%s.dust', name);

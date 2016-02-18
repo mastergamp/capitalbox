@@ -17,6 +17,7 @@
     "googleapis": "^2.1.7",
     "jquery": "^2.1.4",
     "lodash": "^3.10.1",
+    "minify": "^2.0.3",
     "mollify": "^1.0.6",
     "moment": "^2.10.6",
     "mongodb": "^2.0.46",

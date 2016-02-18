@@ -8,3 +8,4 @@ capitalbox.pub
 google.conf
 google.auth
 local-config.js
+modules/static_min
