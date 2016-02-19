@@ -1,63 +1,66 @@
-<div class="col-md-offset-4 col-md-4" style="margin-top: 20px; margin-bottom: 40px" id="{uniq}">
-    <h4 class="text-muted"><b>Please sign in</b></h4>
-    <hr>
-    <form id="loginform">
-        <input class="text-center form-control" type="text" name="_s_login" placeholder="Login" style="margin-bottom: 5px;" autocomplete="off">
-        <input class="text-center form-control" type="password" name="_s_password" placeholder="Password"  style="margin-bottom: 5px;" autocomplete="off">
-        <a id="signin" href="#main" class="btn btn-block btn-primary"><b>Sign In</b></a>
-        <div class="btn btn-block btn-info" id="reg"><b>Registration</b></div>
-    </form>
+<div class="row">
+	<div class="col-md-offset-4 col-md-4" style="margin-top: 20px; margin-bottom: 40px" id="{uniq}">
+		<h4 class="text-muted"><b>Please sign in</b></h4>
+		<hr>
+		<form id="loginform">
+			<input class="text-center form-control" type="text" name="_s_login" placeholder="Login" style="margin-bottom: 5px;" autocomplete="off">
+			<input class="text-center form-control" type="password" name="_s_password" placeholder="Password"  style="margin-bottom: 5px;" autocomplete="off">
+			<a id="signin" href="#main" class="btn btn-block btn-primary"><b>Sign In</b></a>
+			<div class="btn btn-block btn-info" id="reg"><b>Registration</b></div>
+		</form>
+	</div>
+	<script>
+		require(['jquery', 'lodash', 'safe','jquery-block'], function($, _, safe) {
+			$(function() {
+				var $main = $('#{uniq}');
+				var $form = $main.find('#loginform');
+
+				$form.on('click', '#reg', function() {
+					var $self = $(this);
+					$.blockUI();
+					safe.run(function(cb) {
+						require(['dst!views/registration_modal.dust'], function(tpl) {
+							tpl({}, safe.sure_result(cb, function(text) {
+								var $text = $(text);
+								$text.modal();
+							}));
+						});
+					}, function(err) {
+						$.unblockUI();
+						appError(err)
+					})
+				});
+
+				function signIn() {
+					var data = _.reduce($form.serializeArray(), function(memo, i) {
+						memo[i.name] = i.value;
+						return memo;
+					}, {});
+
+					$.blockUI();
+					return safe.run(function(cb) {
+						require(['api'], function(api){
+							api.call('core.loggedinProcess', data, safe.sure_result(cb, function(user) {
+								_apiToken = user._s_token;
+								cliRedirect('main');
+							}));
+						}, cb);
+					}, function(err) {
+						appError(err, '#loginform');
+						$.unblockUI();
+					});
+				}
+
+				$form.on('keydown', function(e) {
+				   if (e.keyCode != 13)
+						return e.stopPropagation();
+
+				   signIn();
+				});
+
+				$form.on('click', '#signin', signIn);
+			});
+		}, appError);
+	</script>
 </div>
-<script>
-    require(['jquery', 'lodash', 'safe','jquery-block'], function($, _, safe) {
-        $(function() {
-            var $main = $('#{uniq}');
-            var $form = $main.find('#loginform');
 
-            $form.on('click', '#reg', function() {
-                var $self = $(this);
-                $.blockUI();
-                safe.run(function(cb) {
-                    require(['dst!views/registration_modal.dust'], function(tpl) {
-                        tpl({}, safe.sure_result(cb, function(text) {
-                            var $text = $(text);
-                            $text.modal();
-                        }));
-                    });
-                }, function(err) {
-                    $.unblockUI();
-                    appError(err)
-                })
-            });
-
-            function signIn() {
-                var data = _.reduce($form.serializeArray(), function(memo, i) {
-                    memo[i.name] = i.value;
-                    return memo;
-                }, {});
-
-                $.blockUI();
-                return safe.run(function(cb) {
-                    require(['api'], function(api){
-                        api.call('core.loggedinProcess', data, safe.sure_result(cb, function(user) {
-                            _apiToken = user._s_token;
-                            cliRedirect('main');
-                        }));
-                    }, cb);
-                }, function(err) {
-                    appError(err, '#loginform');
-                    $.unblockUI();
-                });
-            }
-
-            $form.on('keydown', function(e) {
-               if (e.keyCode != 13)
-                    return e.stopPropagation();
-
-               signIn();
-            });
-
-            $form.on('click', '#signin', signIn);
-        });
-    }, appError);
-</script>
