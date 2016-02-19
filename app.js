@@ -17,6 +17,7 @@ var fs = require("fs");
 var gdrive = require("gdrive_tingodb");
 var colors = require("colors");
 var cfg = require("config");
+var staticPath = cfg.dev ? cfg.STATIC : cfg.STATIC_MIN;
 
 console.time("Run server on port ".green + port.toString().yellow);
 
@@ -33,7 +34,7 @@ dust._.optimizers.format = function (ctx, node) {
 app.use(compression());
 
 app.set('view engine', 'dust');
-app.set('views', cfg.STATIC_MIN + '/views');
+app.set('views', staticPath + '/views');
 app.set('view options', {
 	layout: true
 });
@@ -41,7 +42,7 @@ app.set('view options', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.use(express.static(cfg.STATIC_MIN));
+app.use(express.static(staticPath));
 
 app.use(session({
 	secret: 'tripl tropl',
