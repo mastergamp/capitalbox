@@ -1,0 +1,41 @@
+<div id="{uniq}">
+    <div class="col-md-6 col-xs-12">
+        {#notices}
+		<div role="button" class="btn btn-default btn-block editNotice" style="margin-bottom:5px;" data-_id="{_id}">{_s_title}</div>
+        {/notices}
+		<div class="btn btn-primary btn-block editNotice" style="margin-bottom:15px;" >Add Notice</div>
+    </div>
+	<div class="col-md-6 col-xs-12" id="edit"></div>
+    <script>
+        require(['jquery', "safe", "lodash", "jquery-block"], function($, safe, _) {
+            $(function() {
+				var $main = $("#{uniq}");
+				
+				$main.on("click", ".editNotice", function() {
+					var $self = $(this);
+					var _id = $self.data("_id");
+					
+					$.blockUI();
+					safe.run(function(cb) {
+						require(['dst!views/add_notice_edit.dust', "api"], function(tpl, api) {
+							safe.run(function(cb) {
+								if (!_id)
+									return cb(null, []);
+									
+								api.call("finance.getNotice", {_id: _id}, cb);	
+							}, safe.sure(cb, function(result) {
+								 tpl(result[0] || {}, safe.sure_result(cb, function(text) {
+									var $text = $(text);
+									$main.find("#edit").empty().append($text);
+								}));
+							}));
+                        }, cb);
+					}, function(err) {
+						$.unblockUI();
+						appError(err);
+					})
+				})
+            });
+        }, appError);
+    </script>
+</div>

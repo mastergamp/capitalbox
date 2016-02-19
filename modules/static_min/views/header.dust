@@ -1,0 +1,22 @@
+<div style="margin-bottom: 5px;">
+    <nav class="navbar navbar-default navbar-static-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#main" onclick="cliRedirect('main')">CapitalBox [<span class="text-info">v1.1</span>]</a>
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-menu" aria-expanded="true">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+            <div class="navbar-collapse collapse out" id="header-menu" aria-expanded="true">
+                <ul class="nav navbar-nav pull-right">
+                    <li><a href="#charts" onclick="cliRedirect('charts')">Charts</a></li>
+                    <li><a href="#notice" onclick="cliRedirect('notice')">Notice</a></li>
+                    <li><a href="#logout" onclick="cliRedirect('logout')">Log out</a></li>
+                </ul>
+            </div>
+		</div>
+    </nav>
+</div>

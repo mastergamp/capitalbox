@@ -1,0 +1,73 @@
+<div id="{uniq}" class="container-fluid">
+    <form class="form-horizontal" id="{uniq}-form">
+        <input type="hidden" name="_id" value="{_id}">
+        <!--title-->
+        <div class="form-group">
+            <input type="text" class="form-control" name="_s_title" value="{_s_title}" required>
+        </div>
+        <!--text-->
+        <div class="form-group">
+            <textarea rows="8" name="_s_text" class="form-control">{_s_text}</textarea>
+        </div>
+    </form>
+    <div class="row">
+		<div class="btn-group pull-right">
+			<div id="close" class="btn btn-default">Close</div>
+            {#_id}
+				<div id="remove" class="btn btn-default">Remove</div>
+            {/_id}
+			<div id="submit" class="btn btn-primary">Save</div>
+		</div>
+    </div>
+    <script>
+        require(['jquery', 'safe', 'lodash', 'moment', 'jquery-block'], function($, safe, _, moment) {
+            $(function() {
+                var $main = $('#{uniq}'), $form = $main.find('form');
+				
+				$main.on("click", '#close', function() {
+				    $main.remove();
+				});
+				
+				{#_id}
+					$main.on("click", "#remove", function() {
+						$main.block();
+					safe.run(function(cb) {
+                        require(['api'], function(api) {
+                            api.call('finance.removeNotice', "{_id}", cb);
+                        }, cb);
+                     }, function(err) {
+                        appError(err);
+						$main.unblock();
+                        if (!err) {
+							cliRedirect('notice');
+						}
+					});	
+				});
+				{/_id}
+
+				$main.on('click', '#submit', function(e) {
+					$main.block();
+                    var data = _.reduce($form.serializeArray(), function(memo, i) {
+                        memo[i.name] = i.value;
+                        return memo;
+                    }, {});
+
+                    data._dt = moment().toDate();
+
+                    safe.run(function(cb) {
+                        require(['api'], function(api) {
+                            api.call('finance.editNotice', data, cb);
+                        }, cb);
+                     }, function(err) {
+                        appError(err);
+						$main.unblock();
+                        if (!err) {
+							$main.modal('hide');
+							cliRedirect('notice');
+						}
+					})		
+                });
+            });
+		}, appError);
+    </script>
+</div>
