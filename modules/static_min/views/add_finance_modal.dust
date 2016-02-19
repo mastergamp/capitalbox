@@ -3,15 +3,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-             <h4 class="modal-title">{#_id}Edit Finance{/_id}{^_id}Add Finance{/_id}</h4>
+             <h4 class="modal-title text-muted"><b>{#_id}Edit Finance{/_id}{^_id}Add Finance{/_id}</b></h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="{uniq}-form">
+                <form id="{uniq}-form">
                     <input type="hidden" name="_id" value="{_id}">
                     <!--type-->
                     <div class="form-group">
-                        <label class="col-xs-2 control-label">Type:</label>
-                        <div class="col-xs-8">
+                        <label>Type:</label>
+                        <div>
                             <select name="_s_type" class="form-control">
                                 <option value="d" {@eq key=_s_type value="d"}selected{/eq}>Debet</option>
                                 <option value="c" {@eq key=_s_type value="c"}selected{/eq}>Credit</option>
@@ -20,15 +20,15 @@
                     </div>
                     <!--value-->
                     <div class="form-group">
-                        <label class="col-xs-2 control-label">Value:</label>
-                        <div class="col-xs-8">
+                        <label>Value:</label>
+                        <div>
                            <input type="number" name="_i_val" value="{_i_val}" class="form-control">
                         </div>
                     </div>
                     <!--Desc-->
                     <div class="form-group">
-                        <label class="col-xs-2 control-label">Desc:</label>
-                        <div class="col-xs-8">
+                        <label>Desc:</label>
+                        <div>
                             <textarea name="_s_desc" class="form-control">{_s_desc}</textarea>
                         </div>
                     </div>

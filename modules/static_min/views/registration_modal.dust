@@ -3,28 +3,28 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Registration</h4>
+                <h4 class="modal-title text-muted"><b>Registration</b></h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="{uniq}-form">
+                <form id="{uniq}-form">
                     <!--Login-->
                     <div class="form-group">
-                        <label class="col-xs-3 control-label">Login:</label>
-                        <div class="col-xs-8">
+                        <label>Login:</label>
+                        <div>
                             <input type="text" name="_s_login" class="form-control">
                         </div>
                     </div>
                     <!--Pass-->
                     <div class="form-group">
-                        <label class="col-xs-3 control-label">Password:</label>
-                        <div class="col-xs-8">
+                        <label>Password:</label>
+                        <div>
                             <input type="password" name="_s_password" class="form-control">
                         </div>
                     </div>
                     <!--Repeat Pass-->
                     <div class="form-group">
-                        <label class="col-xs-3 control-label">Repeat:</label>
-                        <div class="col-xs-8">
+                        <label>Repeat:</label>
+                        <div>
                             <input type="password" name="_t_password" class="form-control">
                         </div>
                     </div>

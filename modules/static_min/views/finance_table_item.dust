@@ -1,22 +1,19 @@
 <tr>
-    <td>{@moment data="_dt" format="YYYY MMM DD HH:mm:ss" /}</td>
-    <td>
+    <td class="col-xs-3">{@moment data="_dt" format="YYYY MMM DD HH:mm:ss" /}</td>
+    <td class="col-xs-2 col-sm-3">
         {@eq key=_s_type value="d" }Debet <span class="text-success glyphicon glyphicon-plus"></span>{/eq}
         {@eq key=_s_type value="c" }Credit <span class="text-danger glyphicon glyphicon-minus"></span>{/eq}
     </td>
-    <td>
+    <td class="col-xs-3">
        {_s_desc}
     </td>
-    <td>
+    <td class="col-xs-1 col-sm-2">
         {_i_val} <span class="glyphicon glyphicon-ruble"></span>
     </td>
-    <td>
-        <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="popover" data-html="true" data-placement="left"
-                data-delay="3"
-                data-content="
-                <div class='btn btn-default btn-xs btn-block edit' data-_id='{_id}'><span class='glyphicon glyphicon-pencil'></span> Edit</div>
-                <div class='btn btn-danger btn-xs btn-block remove' data-_id='{_id}'><span class='glyphicon glyphicon-trash'></span> Remove</div>
-                "
-                >action</button>
+    <td class="col-sm-1 col-xs-3">
+        <div class="btn-group pull-right btn-group-justified">
+			<div class='btn btn-default btn-xs edit' data-_id='{_id}'><span class='glyphicon glyphicon-pencil'></span></div>
+			<div class='btn btn-danger btn-xs remove' data-_id='{_id}'><span class='glyphicon glyphicon-trash'></span></div>
+        </div>
     </td>
 </tr>

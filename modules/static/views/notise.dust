@@ -1,4 +1,4 @@
-<div id="{uniq}">
+<div id="{uniq}" class="row">
     <div class="col-md-6 col-xs-12">
         {#notices}
 		<div role="button" class="btn btn-default btn-block editNotice" style="margin-bottom:5px;" data-_id="{_id}">{_s_title}</div>
