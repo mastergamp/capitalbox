@@ -1,3 +1,4 @@
+const path = require("path");
 var conf = {
 	db : {
 		path: __dirname + "/modules/db"
@@ -7,12 +8,14 @@ var conf = {
 	},
 	"gdrive": {
 		enabled: 1
-	}
+	},
+	STATIC: path.join(__dirname, "modules/static"),
+	STATIC_MIN:  path.join(__dirname, "modules/static_min")
 };
 
 try {
-	var lconf = require("./local-config");
-	var _ = require("lodash");
+	const lconf = require("./local-config");
+	const _ = require("lodash");
 	conf = _.merge(conf, lconf);
 }
 catch (err) {};
