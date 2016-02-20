@@ -27,30 +27,34 @@ var tpl = function(name) {
 module.exports.tpl = tpl;
 
 var logoutProcess = function(token, cb) {
-	ctx.collection(USERS, safe.sure(cb, function(users_coll) {
-		users_coll.update({_s_token: token}, {$unset: {_s_token: 1}}, gdrive.callback(token, USERS, cb));
+	gdrive.syncDB(token, safe.sure(cb, function() {
+		ctx.collection(USERS, safe.sure(cb, function(users_coll) {
+			users_coll.update({_s_token: token}, {$unset: {_s_token: 1}}, gdrive.callback(token, USERS, cb));
+		}));
 	}));
 };
 
 module.exports.logoutProcess = logoutProcess;
 
 var loggedinProcess = function(token, query, cb) {
-	safe.parallel([
-		function(cb) {
-			ctx.collection(USERS, cb);
-		},
-		function(cb) {
-			getUser(token, query, cb);
-		}
-	], safe.sure_spread(cb, function(users_coll, user) {
-		if (!user)
-			return cb(new Error("Password or login is incorrect"));
-
-		user._s_token = crypto.createHash("md5").update(user._s_login).update(moment().toDate().valueOf().toString()).digest("hex");
-		users_coll.update({_id: user._id}, {$set: {_s_token: user._s_token}}, safe.sure(cb, function() {
-			gdrive.updateDB(token, USERS);
-			cb(null, user);
-		}))
+	gdrive.syncDB(token, safe.sure(cb, function() {
+		safe.parallel([
+			function(cb) {
+				ctx.collection(USERS, cb);
+			},
+			function(cb) {
+				getUser(token, query, cb);
+			}
+		], safe.sure_spread(cb, function(users_coll, user) {
+			if (!user)
+				return cb(new Error("Password or login is incorrect"));
+	
+			user._s_token = crypto.createHash("md5").update(user._s_login).update(moment().toDate().valueOf().toString()).digest("hex");
+			users_coll.update({_id: user._id}, {$set: {_s_token: user._s_token}}, safe.sure(cb, function() {
+				gdrive.updateDB(token, USERS);
+				cb(null, user);
+			}))
+		}));
 	}));
 };
 
@@ -136,28 +140,30 @@ var prefixify = function(data) {
 module.exports.prefixify = prefixify;
 		
 var addUser = function(token, data, cb) {
-	var m = null;
-	
-	data = prefixify(data);
-	
-	_.each(fields, function(v, k) {
-	  if (!data[k]) {
-		m = 'Invalid Insert Data';
-		return false
-	  }
-	});
-	
-	if (m)
-	  return safe.back(cb, new Error(m));
-	
-	ctx.collection(USERS, safe.sure(cb, function(users) {
-		users.findOne({_s_login: data._s_login}, safe.sure(cb, function(existsUser) {
-		  if (!existsUser) {
-			data._s_password = crypto.createHash("md5").update(data._s_password).digest("hex");  
-			users.insert(data, gdrive.callback(token, USERS, cb));
+	gdrive.syncDB(token, safe.sure(cb, function() {
+		var m = null;
+		
+		data = prefixify(data);
+		
+		_.each(fields, function(v, k) {
+		  if (!data[k]) {
+			m = 'Invalid Insert Data';
+			return false
 		  }
-		  else
-			cb(new Error('User with this login or Identifier already exists.'));
+		});
+		
+		if (m)
+		  return safe.back(cb, new Error(m));
+		
+		ctx.collection(USERS, safe.sure(cb, function(users) {
+			users.findOne({_s_login: data._s_login}, safe.sure(cb, function(existsUser) {
+			  if (!existsUser) {
+				data._s_password = crypto.createHash("md5").update(data._s_password).digest("hex");  
+				users.insert(data, gdrive.callback(token, USERS, cb));
+			  }
+			  else
+				cb(new Error('User with this login or Identifier already exists.'));
+			}));
 		}));
 	}));
 };

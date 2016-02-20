@@ -70,9 +70,15 @@ var getDriveFileLists = function(token, fn, cb) {
 	}));
 };
 
-var syncDB = function(token) {
+var syncDB = function(token, cb) {
+	if (!cb)
+		cb = function(err) {
+			if (err)
+				console.error(err)
+		};
+	
 	if (!cfg.gdrive.enabled)
-		return ;
+		return cb(null);
 		
 	safe.auto({
 		readdir: function (cb) {
@@ -105,10 +111,7 @@ var syncDB = function(token) {
 				}
 			}, cb);
 		}]
-	}, function(err) {
-		if (err)
-			console.error(err)
-	});
+	}, cb);
 };
 
 var updateDB = function(token, dbname) {
