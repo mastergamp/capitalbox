@@ -103,7 +103,10 @@ var syncDB = function(token, cb) {
 							console.info("Complete downloading collection: ".blue + item.title.yellow);
 							cb(null);
 						})
-						.on('error', cb)
+						.on('error', function(err) {
+							console.error(err);
+							cb(null);
+						})
 						.pipe(dest);
 				}
 			}, cb);
