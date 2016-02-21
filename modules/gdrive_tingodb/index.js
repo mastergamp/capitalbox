@@ -101,13 +101,10 @@ var syncDB = function(token, cb) {
 					drive2.files.get({fileId: item.id, alt: "media"})
 						.on('end', function () {
 							console.info("Complete downloading collection: ".blue + item.title.yellow);
+							cb(null);
 						})
-						.on('error', function (err) {
-							console.error(err)
-						})
+						.on('error', cb)
 						.pipe(dest);
-
-					safe.back(cb);
 				}
 			}, cb);
 		}]
