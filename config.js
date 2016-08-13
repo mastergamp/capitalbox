@@ -4,7 +4,7 @@ var conf = {
 		path: __dirname + "/modules/db"
 	},
 	"google": {
-		"DBFolder": "0B0-8vnNvFNZTV0o5NW9qelJxeVk"
+		"DBFolder": "0B0-8vnNvFNZTZ1p6ek9kX2RYSjg"
 	},
 	"gdrive": {
 		enabled: 1
